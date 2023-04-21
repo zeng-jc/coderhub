@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+const avatarClick = () => {
+  console.log('----------s')
+}
+</script>
 
 <template>
   <div class="navbar">
@@ -30,7 +34,7 @@
         </a-menu>
       </a-col>
       <a-col flex="200px" class="right">
-        <a-avatar class="avatar">Design</a-avatar>
+        <a-avatar class="avatar" @click="avatarClick">Design</a-avatar>
         <icon-notification class="notify" />
       </a-col>
     </a-row>

@@ -23,7 +23,7 @@
 
 <style scoped>
 .card {
-  width: 200px;
+  width: 240px;
   background-color: var(--theme-bgk1);
 }
 </style>

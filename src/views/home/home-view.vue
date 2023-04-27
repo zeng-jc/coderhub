@@ -1,31 +1,31 @@
 <script setup>
 import '@arco-design/web-vue/es/message/style/css.js'
 // import { Message } from '@arco-design/web-vue'
-import navbarView from './cmp/navbar-view.vue'
+import navbarView from '@/components/navbar/navbar-view.vue'
 import sidebarView from './cmp/sidebar-view.vue'
 import contentView from './cmp/content-view.vue'
 import userinfoView from './cmp/userinfo-view.vue'
 </script>
 
 <template>
-  <a-layout>
-    <a-layout-header class="nav-bar">
-      <navbar-view />
-    </a-layout-header>
-    <a-layout class="content">
-      <a-layout-sider>
-        <sidebar-view />
-      </a-layout-sider>
+  <div class="home">
+    <navbar-view />
+    <div class="main-container">
+      <sidebar-view />
       <content-view />
-      <userinfo-view></userinfo-view>
-    </a-layout>
-  </a-layout>
+      <userinfo-view />
+    </div>
+  </div>
 </template>
 
-<style>
-.content {
-  background-color: var(--home-bgk);
+<style lang="less" scoped>
+.home {
+  background-color: var(--theme-bgk2);
   height: 100%;
-  padding: 30px 45px;
+  .main-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+  }
 }
 </style>

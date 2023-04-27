@@ -13,4 +13,8 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.sidebar {
+  background-color: var(--theme-bgk1);
+}
+</style>

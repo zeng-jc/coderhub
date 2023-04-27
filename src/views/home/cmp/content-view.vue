@@ -11,21 +11,6 @@
           </span>
           {{ 83 + (like ? 1 : 0) }}
         </span>
-        <span class="action" key="star" @click="onStarChange">
-          <span v-if="star">
-            <IconStarFill
-              style="
-                 {
-                  color: '#ffb400';
-                }
-              "
-            />
-          </span>
-          <span v-else>
-            <IconStar />
-          </span>
-          {{ 3 + (star ? 1 : 0) }}
-        </span>
         <span class="action" key="reply"> <IconMessage /> Reply </span>
       </template>
       <template #avatar>
@@ -47,45 +32,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
-import {
-  IconHeart,
-  IconMessage,
-  IconStar,
-  IconStarFill,
-  IconHeartFill
-} from '@arco-design/web-vue/es/icon'
+import { IconHeart, IconMessage, IconHeartFill } from '@arco-design/web-vue/es/icon'
 
-export default {
-  components: {
-    IconHeart,
-    IconMessage,
-    IconStar,
-    IconStarFill,
-    IconHeartFill
-  },
-  setup() {
-    const like = ref(false)
-    const star = ref(false)
-    const onLikeChange = () => {
-      like.value = !like.value
-    }
-    const onStarChange = () => {
-      star.value = !star.value
-    }
-
-    return {
-      like,
-      star,
-      onLikeChange,
-      onStarChange
-    }
-  }
+const like = ref(false)
+const onLikeChange = () => {
+  like.value = !like.value
 }
 </script>
 
 <style scoped>
+.content {
+  background-color: var(--theme-bgk1);
+  margin: 0 15px;
+  padding: 20px;
+}
 .action {
   display: inline-block;
   padding: 0 4px;

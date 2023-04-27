@@ -2,7 +2,7 @@
 
 <template>
   <div class="userinfo">
-    <a-card hoverable :style="{ width: '200px' }">
+    <a-card hoverable class="card">
       <template #cover>
         <div
           :style="{
@@ -21,4 +21,9 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.card {
+  width: 200px;
+  background-color: var(--theme-bgk1);
+}
+</style>

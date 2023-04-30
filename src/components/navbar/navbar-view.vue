@@ -6,7 +6,7 @@ const isLogin = ref(false)
 if (localStorage.getItem('token')) {
   isLogin.value = true
 }
-const avatarClick = () => {}
+const centralClick = () => {}
 const logoutClick = () => {
   localStorage.removeItem('token')
   // 简单实现页面刷新，后续需要优化
@@ -64,15 +64,15 @@ const registryClick = () => {
           >
           </a-avatar>
           <template #content>
-            <p @click="avatarClick" class="central">个人中心</p>
+            <p @click="centralClick" class="central">个人中心</p>
             <p @click="logoutClick" class="logout">退出登录</p>
           </template>
         </a-popover>
         <a-popover trigger="click" v-else>
           <a-avatar class="avatar" :size="36">未登录</a-avatar>
           <template #content>
-            <p @click="loginClick" class="central">立即登录</p>
-            <p @click="registryClick" class="central">立即注册</p>
+            <p @click="loginClick" class="login">立即登录</p>
+            <p @click="registryClick" class="registry">立即注册</p>
           </template>
         </a-popover>
       </a-col>
@@ -82,7 +82,9 @@ const registryClick = () => {
 
 <style scoped lang="less">
 .central,
-.logout {
+.logout,
+.login,
+.registry {
   cursor: pointer;
   &:hover {
     text-decoration: underline;

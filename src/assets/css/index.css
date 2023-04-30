@@ -2,3 +2,13 @@
   --theme-bgk1: #fff;
   --theme-bgk2: #f4f6f6;
 }
+
+html,
+body {
+  height: 100%;
+}
+
+.arco-input-wrapper {
+  background-color: #fff !important;
+  border: 1px solid #e5e6eb !important;
+}

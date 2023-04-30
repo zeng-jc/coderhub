@@ -1,50 +1,149 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user.store.js'
+import { Message } from '@arco-design/web-vue'
+import '@arco-design/web-vue/es/message/style/css.js'
+
+const userStore = useUserStore()
+const router = useRouter()
+const loginLoading = ref(false)
+
 const form = reactive({
-  nickname: '',
   username: '',
   password: '',
-  rePassword: '',
-  isRead: false
+  isRemember: false
 })
+const formRules = {
+  username: [
+    { required: true, message: '请填写用户名' },
+    { minLength: 8, message: '必须大于8个字符' }
+  ],
+  password: [
+    { required: true, message: '请填写密码' },
+    { minLength: 8, message: '必须大于8个字符' }
+  ]
+}
+const handleSubmit = async (data) => {
+  loginLoading.value = true
+  try {
+    const msg = await userStore.login(data.username, data.password)
+    if (msg) return Message.error(`登录失败，${msg}`)
+    router.push('/home')
+    loginLoading.value = false
+    Message.success('登录成功')
+  } catch (error) {
+    Message.error('服务器异常')
+    loginLoading.value = false
+  }
+}
 </script>
 
 <template>
   <div class="loginView">
-    <a-form :model="form" layout="vertical" class="form">
-      <a-form-item field="nickname" label="Nickname">
-        <a-input v-model="form.name" placeholder="请输入昵称" />
-      </a-form-item>
-      <a-form-item field="username" label="Account">
-        <a-input v-model="form.username" placeholder="请输入账号" />
-      </a-form-item>
-      <a-form-item field="password" label="Password">
-        <a-input v-model="form.password" placeholder="请输入密码" />
-      </a-form-item>
-      <a-form-item field="rePassword" label="rePassword">
-        <a-input v-model="form.rePassword" placeholder="请确认密码" />
-      </a-form-item>
-      <a-radio-group>
-        <a-radio value="male">男</a-radio>
-        <a-radio value="female">女</a-radio>
-      </a-radio-group>
-      <a-form-item field="isRead">
-        <a-checkbox v-model="form.isRead"> 同意注册 </a-checkbox>
-      </a-form-item>
-      <a-form-item>
-        <a-button>Submit</a-button>
-      </a-form-item>
-    </a-form>
+    <div class="loginSection">
+      <div class="left">
+        <h2>欢迎回来~</h2>
+        <div class="tip">请输入你的信息</div>
+        <a-form :model="form" layout="vertical" class="loginform" @submit-success="handleSubmit">
+          <a-form-item field="username" label="Username" :rules="formRules.username">
+            <a-input v-model="form.username" placeholder="请输入用户名/邮箱">
+              <template #prefix>
+                <icon-user />
+              </template>
+            </a-input>
+          </a-form-item>
+          <a-form-item field="password" label="Password" :rules="formRules.password">
+            <a-input-password v-model="form.password" placeholder="请输入密码">
+              <template #prefix>
+                <icon-lock />
+              </template>
+            </a-input-password>
+          </a-form-item>
+          <a-form-item field="isRead" class="handler">
+            <a-checkbox v-model="form.isRemember"> 记住密码 </a-checkbox>
+            <div class="forgetPassword">忘记密码</div>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" long html-type="submit" :loading="loginLoading">登录</a-button>
+          </a-form-item>
+        </a-form>
+        <div class="toRegistry">
+          没有账号？
+          <span>立即注册</span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="circle"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped>
+:deep(.arco-form-item-content.arco-form-item-content-flex) {
+  justify-content: space-between;
+  .forgetPassword {
+    color: rgb(var(--primary-6));
+    cursor: pointer;
+  }
+}
 .loginView {
+  background-color: var(--theme-bgk1);
   display: flex;
   justify-content: center;
-  margin-top: 100px;
-  .form {
-    width: 310px;
+  height: 100vh;
+  .loginSection {
+    margin-top: 18vh;
+    background-color: #fff;
+    height: fit-content;
+    width: 700px;
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px -5px #86909c;
+    .left {
+      flex: 1;
+      padding: 0 40px;
+      .tip {
+        color: #c9cdd4;
+        font-size: 10px;
+        margin-bottom: 10px;
+      }
+      .toRegistry {
+        margin: 15px 0;
+        text-align: center;
+        span {
+          cursor: pointer;
+          color: rgb(var(--primary-6));
+        }
+      }
+    }
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f5f7f9;
+      .circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: rgb(var(--primary-6));
+        position: relative;
+        &::after {
+          content: '';
+          width: 180px;
+          height: 85px;
+          background-color: transparent;
+          backdrop-filter: blur(8px);
+          position: absolute;
+          top: 50%;
+          right: 50%;
+          transform: translateX(50%);
+        }
+      }
+    }
   }
 }
 </style>

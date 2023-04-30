@@ -37,7 +37,7 @@ const avatarClick = () => {
         </a-input>
       </a-col>
       <a-col :flex="2" class="right">
-        <a-avatar class="avatar" @click="avatarClick">Design</a-avatar>
+        <a-avatar class="avatar" @click="avatarClick" :size="36">未登录</a-avatar>
         <icon-notification class="notify" />
       </a-col>
     </a-row>
@@ -66,7 +66,6 @@ const avatarClick = () => {
       font-size: 20px;
     }
     .avatar {
-      background-color: #00d0b6;
       cursor: pointer;
     }
   }

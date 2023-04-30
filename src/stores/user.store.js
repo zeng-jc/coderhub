@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia'
-import { login } from '@/service/index'
-import { Ref } from 'vue'
+import { fetchLogin } from '@/service/index'
 
-export const useUserStore = defineStore('user', () => {
-  const username = Ref('')
-  const password = Ref('')
-  login(username, password).then((res) => {
-    username.value = res.data.username
-    password.value = res.data.password
-  })
-  return { username, password }
+export const useUserStore = defineStore('user', {
+  states: {
+    userInfo: ''
+  },
+  actions: {
+    async login(username, password) {
+      const res = await fetchLogin(username, password)
+      if (res.code !== 200) return res.msg
+      this.userInfo = res.data
+      localStorage.setItem('token', res.token || null)
+    }
+  }
 })

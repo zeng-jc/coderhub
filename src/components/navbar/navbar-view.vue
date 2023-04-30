@@ -1,9 +1,23 @@
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-const avatarClick = () => {
-  console.log('----------s')
+const isLogin = ref(false)
+if (localStorage.getItem('token')) {
+  isLogin.value = true
+}
+const avatarClick = () => {}
+const logoutClick = () => {
+  localStorage.removeItem('token')
+  // 简单实现页面刷新，后续需要优化
+  router.go(0)
+}
+const loginClick = () => {
   router.push('/login')
+}
+
+const registryClick = () => {
+  router.push('/registry')
 }
 </script>
 
@@ -21,7 +35,7 @@ const avatarClick = () => {
           }"
         />
       </a-col>
-      <a-col :flex="9" class="center">
+      <a-col :flex="8" class="center">
         <a-menu mode="horizontal" :default-selected-keys="['1']">
           <a-menu-item key="1">Home</a-menu-item>
           <a-menu-item key="2">热门</a-menu-item>
@@ -30,26 +44,56 @@ const avatarClick = () => {
           <a-menu-item key="5">文章</a-menu-item>
           <a-menu-item key="6">资源</a-menu-item>
         </a-menu>
-        <a-input placeholder="请输入搜索内容" allow-clear :style="{ width: '300px' }">
+        <a-input
+          placeholder="请输入搜索内容"
+          allow-clear
+          :style="{ width: '300px', marginRight: '110px' }"
+        >
           <template #prefix>
             <icon-search />
           </template>
         </a-input>
       </a-col>
       <a-col :flex="2" class="right">
-        <a-avatar class="avatar" @click="avatarClick" :size="36">未登录</a-avatar>
         <icon-notification class="notify" />
+        <a-popover trigger="click" v-if="isLogin">
+          <a-avatar
+            class="avatar"
+            :size="36"
+            imageUrl="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
+          >
+          </a-avatar>
+          <template #content>
+            <p @click="avatarClick" class="central">个人中心</p>
+            <p @click="logoutClick" class="logout">退出登录</p>
+          </template>
+        </a-popover>
+        <a-popover trigger="click" v-else>
+          <a-avatar class="avatar" :size="36">未登录</a-avatar>
+          <template #content>
+            <p @click="loginClick" class="central">立即登录</p>
+            <p @click="registryClick" class="central">立即注册</p>
+          </template>
+        </a-popover>
       </a-col>
     </a-row>
   </div>
 </template>
 
 <style scoped lang="less">
+.central,
+.logout {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 .navbar {
   background-color: var(--theme-bgk1);
   .left,
   .right {
-    margin-left: 40px;
+    display: flex;
+    justify-content: center;
   }
   .center {
     display: flex;
@@ -57,14 +101,13 @@ const avatarClick = () => {
   }
   .right {
     display: flex;
-    margin-right: 40px;
-    flex-direction: row-reverse;
     align-items: center;
     .notify {
       margin-right: 15px;
       cursor: pointer;
       font-size: 20px;
     }
+
     .avatar {
       cursor: pointer;
     }

@@ -17,11 +17,16 @@ const form = reactive({
 const formRules = {
   username: [
     { required: true, message: '请填写用户名' },
-    { minLength: 8, message: '必须大于8个字符' }
+    { minLength: 6, message: '用户名不少于6个字符' },
+    {
+      validator(val, cb) {
+        if (!/^[A-Za-z0-9_@]+$/.test(val)) cb('账户格式错误')
+      }
+    }
   ],
   password: [
     { required: true, message: '请填写密码' },
-    { minLength: 8, message: '必须大于8个字符' }
+    { minLength: 6, message: '密码名不少于6个字符' }
   ]
 }
 const handleSubmit = async (data) => {

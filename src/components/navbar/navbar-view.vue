@@ -16,8 +16,8 @@ const loginClick = () => {
   router.push('/login')
 }
 
-const registryClick = () => {
-  router.push('/registry')
+const signupClick = () => {
+  router.push('/signup')
 }
 </script>
 
@@ -72,7 +72,7 @@ const registryClick = () => {
           <a-avatar class="avatar" :size="36">未登录</a-avatar>
           <template #content>
             <p @click="loginClick" class="login">立即登录</p>
-            <p @click="registryClick" class="registry">立即注册</p>
+            <p @click="signupClick" class="signup">立即注册</p>
           </template>
         </a-popover>
       </a-col>
@@ -84,7 +84,7 @@ const registryClick = () => {
 .central,
 .logout,
 .login,
-.registry {
+.signup {
   cursor: pointer;
   &:hover {
     text-decoration: underline;

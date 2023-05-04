@@ -38,6 +38,9 @@ class MyRequest {
         })
     })
   }
+  post(config) {
+    return this.request({ ...config, methods: 'post' })
+  }
 }
 
 export default new MyRequest(BASE_URL, TIMEOUT)

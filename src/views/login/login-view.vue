@@ -5,6 +5,9 @@ import { useUserStore } from '@/stores/user.store.js'
 import { Message } from '@arco-design/web-vue'
 import '@arco-design/web-vue/es/message/style/css.js'
 
+// hooks
+import { usernameRule, passwordRule } from '@/hooks/formRules'
+
 const userStore = useUserStore()
 const router = useRouter()
 const loginLoading = ref(false)
@@ -14,21 +17,7 @@ const form = reactive({
   password: '',
   isRemember: false
 })
-const formRules = {
-  username: [
-    { required: true, message: '请填写用户名' },
-    { minLength: 6, message: '用户名不少于6个字符' },
-    {
-      validator(val, cb) {
-        if (!/^[A-Za-z0-9_@]+$/.test(val)) cb('账户格式错误')
-      }
-    }
-  ],
-  password: [
-    { required: true, message: '请填写密码' },
-    { minLength: 6, message: '密码名不少于6个字符' }
-  ]
-}
+
 const handleSubmit = async (data) => {
   loginLoading.value = true
   try {
@@ -42,6 +31,10 @@ const handleSubmit = async (data) => {
     loginLoading.value = false
   }
 }
+
+const toSignup = () => {
+  router.push('signup')
+}
 </script>
 
 <template>
@@ -51,14 +44,14 @@ const handleSubmit = async (data) => {
         <h2>欢迎回来~</h2>
         <div class="tip">请输入你的信息</div>
         <a-form :model="form" layout="vertical" class="loginform" @submit-success="handleSubmit">
-          <a-form-item field="username" label="Username" :rules="formRules.username">
+          <a-form-item field="username" label="Username" :rules="usernameRule">
             <a-input v-model="form.username" placeholder="请输入用户名/邮箱">
               <template #prefix>
                 <icon-user />
               </template>
             </a-input>
           </a-form-item>
-          <a-form-item field="password" label="Password" :rules="formRules.password">
+          <a-form-item field="password" label="Password" :rules="passwordRule">
             <a-input-password v-model="form.password" placeholder="请输入密码">
               <template #prefix>
                 <icon-lock />
@@ -73,9 +66,9 @@ const handleSubmit = async (data) => {
             <a-button type="primary" long html-type="submit" :loading="loginLoading">登录</a-button>
           </a-form-item>
         </a-form>
-        <div class="toRegistry">
+        <div class="toSignup">
           没有账号？
-          <span>立即注册</span>
+          <span @click="toSignup">立即注册</span>
         </div>
       </div>
       <div class="right">
@@ -115,7 +108,7 @@ const handleSubmit = async (data) => {
         font-size: 10px;
         margin-bottom: 10px;
       }
-      .toRegistry {
+      .toSignup {
         margin: 15px 0;
         text-align: center;
         span {

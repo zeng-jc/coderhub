@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 import { fetchLogin } from '@/service/index'
 
-export const useUserStore = defineStore('user', {
-  states: {
-    userInfo: ''
+const useUserStore = defineStore('user', {
+  states: () => {
+    return {
+      userInfo: ''
+    }
   },
   actions: {
     async login(username, password) {
@@ -14,3 +16,5 @@ export const useUserStore = defineStore('user', {
     }
   }
 })
+
+export default useUserStore

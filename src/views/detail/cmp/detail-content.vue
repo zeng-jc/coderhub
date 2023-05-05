@@ -1,40 +1,46 @@
 <script setup>
-import { IconMessage } from '@arco-design/web-vue/es/icon'
-
+import { ref } from 'vue'
 defineProps({
   momentDetail: {
     type: Object,
     default: () => ({})
   }
 })
+
+const like = ref(false)
 </script>
 
 <template>
-  <div class="detail-content">
+  <div class="moment-content">
     <a-comment
       align="right"
-      :author="momentDetail.moment?.user.nickname"
+      :author="momentDetail.moment.user.nickname"
       avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-      :content="momentDetail.moment?.content"
-      :datetime="momentDetail.moment?.createAt"
+      :content="momentDetail.moment.content"
+      :datetime="momentDetail.moment.createAt"
     >
       <template #actions>
-        <span class="action"> <IconMessage /> Reply </span>
+        <span class="action" key="heart">
+          <span v-if="like">
+            <IconHeartFill :style="{ color: '#f53f3f' }" />
+          </span>
+          <span v-else>
+            <IconHeart />
+          </span>
+          {{ momentDetail.moment.likes }}
+        </span>
+        <span class="action" key="reply">
+          <IconMessage /> {{ momentDetail.moment.commentCount }}
+        </span>
       </template>
-      <a-comment
-        align="right"
-        avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-      >
-        <template #actions>
-          <a-button key="0" type="secondary"> Cancel </a-button>
-          <a-button key="1" type="primary"> Reply </a-button>
-        </template>
-        <template #content>
-          <a-input placeholder="Here is you content." />
-        </template>
-      </a-comment>
     </a-comment>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.moment-content {
+  background-color: var(--color-bg-2);
+  padding: 30px;
+  margin-bottom: 10px;
+}
+</style>

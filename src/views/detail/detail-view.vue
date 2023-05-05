@@ -4,20 +4,25 @@ import useDtailStore from '../../stores/detail.store'
 import { storeToRefs } from 'pinia'
 import detailContent from './cmp/detail-content.vue'
 import detailSidebar from './cmp/detail-sidebar.vue'
+import detailComment from './cmp/detail-comment.vue'
 
 const route = useRoute()
 const detailStore = useDtailStore()
 detailStore.getMomentDetail(route.params.id)
+detailStore.getComment(route.params.id)
 
-const { momentDetailData } = storeToRefs(detailStore)
+const { momentDetailData, commentsTree } = storeToRefs(detailStore)
 </script>
 
 <template>
   <div class="detail">
-    <div class="moment-content">
-      <detail-content :moment-detail="momentDetailData"></detail-content>
+    <div class="detail-main">
+      <detail-content v-if="momentDetailData" :moment-detail="momentDetailData"></detail-content>
+      <div class="comment-content">
+        <detail-comment v-if="commentsTree" :comments="commentsTree"></detail-comment>
+      </div>
     </div>
-    <div class="side-bar">
+    <div class="detail-sidebar">
       <detail-sidebar></detail-sidebar>
     </div>
   </div>
@@ -25,16 +30,18 @@ const { momentDetailData } = storeToRefs(detailStore)
 
 <style lang="less" scoped>
 .detail {
-  height: calc(100vh - 76px);
+  height: fit-content;
   max-width: 1200px;
   margin: auto;
   display: flex;
-  .moment-content {
-    background-color: var(--color-bg-2);
+  .detail-main {
     width: 75%;
-    padding: 30px;
+    .comment-content {
+      background-color: var(--color-bg-2);
+      padding: 30px;
+    }
   }
-  .side-bar {
+  .detail-sidebar {
     width: 25%;
     background-color: var(--color-bg-2);
     height: 40vh;

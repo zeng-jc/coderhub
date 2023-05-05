@@ -6,3 +6,10 @@ export function fetchMomentDetail(id) {
     url: `/moment/${id}`
   })
 }
+
+export function fetchComent(id) {
+  return myRequest.request({
+    method: 'get',
+    url: `/comment/${id}`
+  })
+}

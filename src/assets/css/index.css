@@ -3,7 +3,9 @@
   --theme-bgk2: #f4f6f6;
 }
 
-body {
+html,
+body,
+#app {
   height: 100%;
 }
 

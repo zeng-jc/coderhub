@@ -106,17 +106,20 @@ const onNext = async () => {
 <style scoped lang="less">
 //  background: var(--color-bg-2);
 // rgb(var(--danger-6));
-.frame-body {
-  width: 50vw;
-  margin: 15vh auto;
-  .frame-main {
-    text-align: center;
-    background: var(--color-bg-2);
-    color: #c2c7cc;
-  }
-  .frame-content {
-    width: 45%;
-    margin: 40px auto;
+.signupView {
+  background: var(--color-bg-2);
+  .frame-body {
+    width: 50vw;
+    margin: 0 auto;
+    padding-top: 15vh;
+    .frame-main {
+      text-align: center;
+      color: #c2c7cc;
+    }
+    .frame-content {
+      width: 45%;
+      margin: 40px auto;
+    }
   }
 }
 </style>

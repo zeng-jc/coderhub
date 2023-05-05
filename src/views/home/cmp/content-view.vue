@@ -1,6 +1,41 @@
+<script setup>
+import { ref } from 'vue'
+import { IconHeart, IconMessage, IconHeartFill } from '@arco-design/web-vue/es/icon'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const like = ref(false)
+const onLikeChange = () => {
+  like.value = !like.value
+}
+defineProps({
+  moments: {
+    type: Object,
+    default: () => ({})
+  }
+})
+
+const momentDetail = (id) => {
+  router.push({
+    name: 'detail',
+    params: {
+      id
+    },
+    target: '_blank'
+  })
+}
+</script>
+
 <template>
   <div class="content">
-    <a-comment author="Balzac" datetime="1 hour" align="right">
+    <a-comment
+      v-for="item in moments.moments"
+      :author="item.userInfo.nickname"
+      :datetime="item.createAt"
+      :key="item.id"
+      class="content-item"
+      align="right"
+    >
       <template #actions>
         <span class="action" key="heart" @click="onLikeChange">
           <span v-if="like">
@@ -9,9 +44,9 @@
           <span v-else>
             <IconHeart />
           </span>
-          {{ 83 + (like ? 1 : 0) }}
+          {{ item.likes }}
         </span>
-        <span class="action" key="reply"> <IconMessage /> Reply </span>
+        <span class="action" key="reply"> <IconMessage /> {{ item.commentCount }} </span>
       </template>
       <template #avatar>
         <a-avatar>
@@ -22,31 +57,23 @@
         </a-avatar>
       </template>
       <template #content>
-        <div>
-          A design is a plan or specification for the construction of an object or system or for the
-          implementation of an activity or process, or the result of that plan or specification in
-          the form of a prototype, product or process.
+        <div @click="momentDetail(item.id)" class="moment-content">
+          {{ item.content }}
         </div>
       </template>
     </a-comment>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { IconHeart, IconMessage, IconHeartFill } from '@arco-design/web-vue/es/icon'
-
-const like = ref(false)
-const onLikeChange = () => {
-  like.value = !like.value
-}
-</script>
-
-<style scoped>
+<style lang="less" scoped>
 .content {
+  width: 60%;
   background-color: var(--theme-bgk1);
   margin: 0 15px;
   padding: 20px;
+  .content-item {
+    cursor: pointer;
+  }
 }
 .action {
   display: inline-block;
@@ -61,5 +88,9 @@ const onLikeChange = () => {
 
 .action:hover {
   background: var(--color-fill-3);
+}
+
+.moment-content:hover {
+  color: rgb(var(--primary-6));
 }
 </style>

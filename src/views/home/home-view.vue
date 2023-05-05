@@ -1,18 +1,21 @@
 <script setup>
 import '@arco-design/web-vue/es/message/style/css.js'
 // import { Message } from '@arco-design/web-vue'
-import navbarView from '@/components/navbar/navbar-view.vue'
 import sidebarView from './cmp/sidebar-view.vue'
 import contentView from './cmp/content-view.vue'
 import userinfoView from './cmp/userinfo-view.vue'
+import useHomeStore from '@/stores/home.store'
+import { storeToRefs } from 'pinia'
+const homeStore = useHomeStore()
+homeStore.getMomentList(15, 0)
+const { moments } = storeToRefs(homeStore)
 </script>
 
 <template>
   <div class="home">
-    <navbar-view />
     <div class="main-container">
       <sidebar-view />
-      <content-view />
+      <content-view :moments="moments" />
       <userinfo-view />
     </div>
   </div>
@@ -21,7 +24,6 @@ import userinfoView from './cmp/userinfo-view.vue'
 <style lang="less" scoped>
 .home {
   background-color: var(--theme-bgk2);
-  height: 100%;
   .main-container {
     max-width: 1200px;
     margin: auto;

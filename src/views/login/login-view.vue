@@ -25,6 +25,7 @@ const handleSubmit = async (data) => {
     if (msg) return Message.error(`登录失败，${msg}`)
     router.push('/home')
     loginLoading.value = false
+    userStore.verifyLogin = true
     Message.success('登录成功')
   } catch (error) {
     Message.error('服务器异常')
@@ -38,7 +39,7 @@ const toSignup = () => {
 </script>
 
 <template>
-  <div class="loginView">
+  <div class="login-view">
     <div class="loginSection">
       <div class="left">
         <h2>欢迎回来~</h2>
@@ -86,11 +87,10 @@ const toSignup = () => {
     cursor: pointer;
   }
 }
-.loginView {
+.login-view {
   background-color: var(--theme-bgk1);
   display: flex;
   justify-content: center;
-  height: 100vh;
   .loginSection {
     margin-top: 18vh;
     background-color: #fff;

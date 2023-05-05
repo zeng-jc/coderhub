@@ -1,23 +1,35 @@
 <script setup>
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import useUserStore from '@/stores/user.store.js'
+import { storeToRefs } from 'pinia'
+const userStore = useUserStore()
+const { verifyLogin } = storeToRefs(userStore)
 const router = useRouter()
-const isLogin = ref(false)
+
+// 检查是否登录
 if (localStorage.getItem('token')) {
-  isLogin.value = true
+  verifyLogin.value = true
 }
-const centralClick = () => {}
+// 进入个人中心界面
+const centralClick = () => {
+  console.log('个人中心')
+}
+// 注销登录
 const logoutClick = () => {
   localStorage.removeItem('token')
-  // 简单实现页面刷新，后续需要优化
-  router.go(0)
+  verifyLogin.value = false
 }
+// 进入登录界面
 const loginClick = () => {
   router.push('/login')
 }
-
+// 进入注册界面
 const signupClick = () => {
   router.push('/signup')
+}
+// 进入home主页
+const toHome = () => {
+  router.push('/home')
 }
 </script>
 
@@ -37,7 +49,7 @@ const signupClick = () => {
       </a-col>
       <a-col :flex="8" class="center">
         <a-menu mode="horizontal" :default-selected-keys="['1']">
-          <a-menu-item key="1">Home</a-menu-item>
+          <a-menu-item key="1" @click="toHome">Home</a-menu-item>
           <a-menu-item key="2">热门</a-menu-item>
           <a-menu-item key="3">最新</a-menu-item>
           <a-menu-item key="4">动态</a-menu-item>
@@ -56,7 +68,7 @@ const signupClick = () => {
       </a-col>
       <a-col :flex="2" class="right">
         <icon-notification class="notify" />
-        <a-popover trigger="click" v-if="isLogin">
+        <a-popover trigger="click" v-if="verifyLogin">
           <a-avatar
             class="avatar"
             :size="36"
@@ -91,7 +103,7 @@ const signupClick = () => {
   }
 }
 .navbar {
-  background-color: var(--theme-bgk1);
+  background-color: var(--color-bg-2);
   .left,
   .right {
     display: flex;

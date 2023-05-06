@@ -7,4 +7,11 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.detail-sidebar {
+  width: 25%;
+  background-color: var(--color-bg-2);
+  margin-left: 20px;
+  height: 40vh;
+}
+</style>

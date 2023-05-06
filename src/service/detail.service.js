@@ -13,3 +13,15 @@ export function fetchComent(id) {
     url: `/comment/${id}`
   })
 }
+
+export function fetchPostComent(moment_id, content, comment_id = null) {
+  return myRequest.request({
+    method: 'post',
+    url: `/comment`,
+    data: {
+      moment_id,
+      content,
+      comment_id
+    }
+  })
+}

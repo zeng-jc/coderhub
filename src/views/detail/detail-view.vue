@@ -1,17 +1,29 @@
 <script setup>
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import useDtailStore from '../../stores/detail.store'
 import { storeToRefs } from 'pinia'
 import detailContent from './cmp/detail-content.vue'
 import detailSidebar from './cmp/detail-sidebar.vue'
 import detailComment from './cmp/detail-comment.vue'
+import useUserStore from '@/stores/user.store.js'
+import { Notification } from '@arco-design/web-vue'
+const userStore = useUserStore()
+const commentContent = ref('')
 
 const route = useRoute()
 const detailStore = useDtailStore()
 detailStore.getMomentDetail(route.params.id)
 detailStore.getComment(route.params.id)
-
 const { momentDetail, commentsTree } = storeToRefs(detailStore)
+
+const postMomentBtn = async () => {
+  const msg = await detailStore.postComent(route.params.id, commentContent.value)
+  if (msg) return Notification.error('评论发表失败')
+  Notification.success('评论发表成功')
+  commentContent.value = ''
+  detailStore.getComment(route.params.id)
+}
 </script>
 
 <template>
@@ -24,19 +36,29 @@ const { momentDetail, commentsTree } = storeToRefs(detailStore)
           avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
         >
           <template #actions>
-            <a-button key="0" type="secondary"> Cancel </a-button>
-            <a-button key="1" type="primary"> Reply </a-button>
+            <a-button
+              key="1"
+              type="primary"
+              @click="postMomentBtn"
+              :disabled="!userStore.verifyLogin || !commentContent"
+            >
+              发表评论
+            </a-button>
           </template>
           <template #content>
-            <a-input placeholder="Here is you content." />
+            <a-textarea
+              v-model="commentContent"
+              placeholder="欢迎评论"
+              :max-length="255"
+              allow-clear
+              show-word-limit
+            />
           </template>
         </a-comment>
         <detail-comment v-if="commentsTree" :comments="commentsTree"></detail-comment>
       </div>
     </div>
-    <div class="detail-sidebar">
-      <detail-sidebar></detail-sidebar>
-    </div>
+    <detail-sidebar></detail-sidebar>
   </div>
 </template>
 
@@ -52,12 +74,6 @@ const { momentDetail, commentsTree } = storeToRefs(detailStore)
       background-color: var(--color-bg-2);
       padding: 30px;
     }
-  }
-  .detail-sidebar {
-    width: 25%;
-    background-color: var(--color-bg-2);
-    height: 40vh;
-    margin-left: 20px;
   }
 }
 

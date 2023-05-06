@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { fetchMomentDetail, fetchComent } from '@/service'
+import { fetchMomentDetail, fetchComent, fetchPostComent } from '@/service'
 import listToTree from '@/utils/listToTree'
 import dateFormat from '@/utils/format_date'
 
@@ -18,8 +18,14 @@ const useDtailStore = defineStore('momentDtail', {
       const { data } = await fetchComent(id)
       for (const item of data.comments) {
         item.createAt = dateFormat(item.createAt, 'YYYY-MM-DD HH:mm')
+        item.content = item.content.replace(/\n/g, '<br>')
       }
       this.commentsTree = listToTree(data.comments)
+    },
+    async postComent(moment_id, content, comment_id = null) {
+      const res = await fetchPostComent(moment_id, content, comment_id)
+      console.log(res)
+      if (res.code !== 200) return res.msg
     }
   }
 })

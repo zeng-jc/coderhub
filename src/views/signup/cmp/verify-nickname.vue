@@ -3,6 +3,7 @@ import { ref } from 'vue'
 const nicknameVal = ref('')
 const isVerify = ref(false)
 const tipRef = ref('')
+import _debounce from '@/utils/debounce'
 
 function verfiyNicknameInput(val) {
   if (!/^[^\s]{1,10}$/.test(val)) {
@@ -12,10 +13,12 @@ function verfiyNicknameInput(val) {
     return
   }
   tipRef.value.style.color = 'rgb(var(--success-6))'
-  tipRef.value.textContent = '用户名符合要求'
+  tipRef.value.textContent = '用户昵称符合要求'
   nicknameVal.value = val
   isVerify.value = true
 }
+// 对昵称验证进行防抖处理
+const verfiyNicknameInput_debounce = _debounce(verfiyNicknameInput, 500)
 
 defineExpose({
   verfiyNicknameInput,
@@ -27,7 +30,7 @@ defineExpose({
 <template>
   <div class="Nickname">
     <a-input
-      @input="verfiyNicknameInput"
+      @input="verfiyNicknameInput_debounce"
       :style="{ width: '320px' }"
       placeholder="请输入昵称"
       allow-clear

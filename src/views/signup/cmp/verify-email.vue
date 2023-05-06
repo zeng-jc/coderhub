@@ -4,6 +4,7 @@ import { fetchVerifyEmail } from '@/service'
 const emailVal = ref('')
 const isVerify = ref(false)
 const tipRef = ref('')
+import _debounce from '@/utils/debounce'
 
 async function verifyEmailInput(val) {
   if (
@@ -28,6 +29,8 @@ async function verifyEmailInput(val) {
   emailVal.value = val
   isVerify.value = true
 }
+// 对邮箱验证进行防抖处理
+const verifyEmailInput_debounce = _debounce(verifyEmailInput, 500)
 
 defineExpose({
   verifyEmailInput,
@@ -39,7 +42,7 @@ defineExpose({
 <template>
   <div class="email">
     <a-input
-      @input="verifyEmailInput"
+      @input="verifyEmailInput_debounce"
       :style="{ width: '320px' }"
       placeholder="请输入邮箱"
       allow-clear

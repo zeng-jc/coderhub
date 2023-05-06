@@ -38,7 +38,6 @@ const onNext = async () => {
       break
   }
   current.value = Math.min(5, current.value + 1)
-  console.log(current.value)
   if (current.value === 5) {
     try {
       const res = await fetchSignupUser(

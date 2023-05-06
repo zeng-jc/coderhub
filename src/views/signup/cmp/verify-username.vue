@@ -4,6 +4,7 @@ import { fetchVerifyUsername } from '@/service'
 const usernameVal = ref('')
 const isVerify = ref(false)
 const tipRef = ref('')
+import _debounce from '@/utils/debounce'
 
 async function verifyUsernameInput(val) {
   if (!/^[A-Za-z0-9_]{6,25}$/.test(val)) {
@@ -24,7 +25,8 @@ async function verifyUsernameInput(val) {
   isVerify.value = true
   usernameVal.value = val
 }
-
+// 对用户名验证进行防抖处理
+const verifyUsernameInput_debounce = _debounce(verifyUsernameInput, 500)
 defineExpose({
   verifyUsernameInput,
   usernameVal,
@@ -35,7 +37,7 @@ defineExpose({
 <template>
   <div class="username">
     <a-input
-      @input="verifyUsernameInput"
+      @input="verifyUsernameInput_debounce"
       :style="{ width: '320px' }"
       placeholder="请输入用户名"
       allow-clear

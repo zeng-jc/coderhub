@@ -3,8 +3,9 @@ import { ref } from 'vue'
 const pwdVal = ref('')
 const isVerify = ref(false)
 const tipRef = ref('')
+import _debounce from '@/utils/debounce'
 
-function verfiyNicknameInput(val) {
+function verfiyPasswordInput(val) {
   if (!/^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*? ])\S*$/.test(val)) {
     tipRef.value.textContent = '包含1个大写和小写，1个数字，1个特殊字符'
     tipRef.value.style.color = ' rgb(var(--danger-6))'
@@ -17,21 +18,22 @@ function verfiyNicknameInput(val) {
   pwdVal.value = val
   isVerify.value = true
 }
-
+// 对密码验证进行防抖处理
+const verfiyPasswordInput_debounce = _debounce(verfiyPasswordInput, 500)
 defineExpose({
-  verfiyNicknameInput,
+  verfiyPasswordInput,
   pwdVal,
   isVerify
 })
 </script>
 
 <template>
-  <div class="Nickname">
+  <div class="password">
     <a-input-password
       :style="{ width: '320px' }"
       placeholder="请输入密码"
       allow-clear
-      @input="verfiyNicknameInput"
+      @input="verfiyPasswordInput_debounce"
     />
     <div class="tip" ref="tipRef">包含1个大写和小写，1个数字，1个特殊字符</div>
   </div>

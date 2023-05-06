@@ -6,10 +6,10 @@ const isVerify = ref(false)
 const tipRef = ref('')
 import _debounce from '@/utils/debounce'
 
-async function verifyEmailInput(val) {
+async function verifyEmailInput() {
   if (
     !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      val
+      emailVal.value
     )
   ) {
     tipRef.value.textContent = '邮箱格式错误'
@@ -17,7 +17,7 @@ async function verifyEmailInput(val) {
     isVerify.value = false
     return
   }
-  const res = await fetchVerifyEmail(val)
+  const res = await fetchVerifyEmail(emailVal.value)
   if (res.code !== 200) {
     tipRef.value.textContent = '邮箱已经被注册'
     tipRef.value.style.color = ' rgb(var(--danger-6))'
@@ -26,7 +26,6 @@ async function verifyEmailInput(val) {
   }
   tipRef.value.textContent = '邮箱符合要求'
   tipRef.value.style.color = 'rgb(var(--success-6))'
-  emailVal.value = val
   isVerify.value = true
 }
 // 对邮箱验证进行防抖处理
@@ -43,6 +42,7 @@ defineExpose({
   <div class="email">
     <a-input
       @input="verifyEmailInput_debounce"
+      v-model="emailVal"
       :style="{ width: '320px' }"
       placeholder="请输入邮箱"
       allow-clear

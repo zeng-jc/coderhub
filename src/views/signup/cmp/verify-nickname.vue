@@ -5,16 +5,14 @@ const isVerify = ref(false)
 const tipRef = ref('')
 import _debounce from '@/utils/debounce'
 
-function verfiyNicknameInput(val) {
-  if (!/^[^\s]{1,10}$/.test(val)) {
+function verfiyNicknameInput() {
+  if (!/^[^\s]{1,10}$/.test(nicknameVal.value)) {
     tipRef.value.textContent = '昵称长度1~10，不能包含空格'
     tipRef.value.style.color = ' rgb(var(--danger-6))'
-    isVerify.value = false
-    return
+    return (isVerify.value = false)
   }
   tipRef.value.style.color = 'rgb(var(--success-6))'
   tipRef.value.textContent = '用户昵称符合要求'
-  nicknameVal.value = val
   isVerify.value = true
 }
 // 对昵称验证进行防抖处理
@@ -31,6 +29,7 @@ defineExpose({
   <div class="Nickname">
     <a-input
       @input="verfiyNicknameInput_debounce"
+      v-model="nicknameVal"
       :style="{ width: '320px' }"
       placeholder="请输入昵称"
       allow-clear

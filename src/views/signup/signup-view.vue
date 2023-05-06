@@ -25,15 +25,19 @@ const onPrev = () => {
 const onNext = async () => {
   switch (current.value) {
     case 1:
+      verifyNicknameRef.value.verfiyNicknameInput(verifyNicknameRef.value.nicknameVal)
       if (!verifyNicknameRef.value.isVerify) return
       break
     case 2:
+      verifyEmailRef.value.verifyEmailInput(verifyEmailRef.value.emailVal)
       if (!verifyEmailRef.value.isVerify) return
       break
     case 3:
+      verifyUsernameRef.value.verifyUsernameInput(verifyUsernameRef.value.usernameVal)
       if (!verifyUsernameRef.value.isVerify) return
       break
     case 4:
+      verifyPasswordRef.value.verifyPasswordInput(verifyPasswordRef.value.pwdVal)
       if (!verifyPasswordRef.value.isVerify) return
       break
   }
@@ -55,6 +59,10 @@ const onNext = async () => {
       loading.value = false
     }
   }
+}
+
+const toLogin = () => {
+  router.push('/login')
 }
 </script>
 
@@ -97,6 +105,10 @@ const onNext = async () => {
             Next <IconRight />
           </a-button>
         </a-space>
+        <div class="login-text">
+          已有账号？
+          <span class="toLogin" @click="toLogin">立即登录</span>
+        </div>
       </div>
     </div>
   </div>
@@ -107,6 +119,7 @@ const onNext = async () => {
 // rgb(var(--danger-6));
 .signupView {
   background: var(--color-bg-2);
+  height: calc(100vh - 74px);
   .frame-body {
     width: 50vw;
     margin: 0 auto;
@@ -114,10 +127,18 @@ const onNext = async () => {
     .frame-main {
       text-align: center;
       color: #c2c7cc;
-    }
-    .frame-content {
-      width: 45%;
-      margin: 40px auto;
+      .frame-content {
+        width: 45%;
+        margin: 40px auto;
+      }
+      .login-text {
+        margin-top: 25px;
+        color: var(--color-text-1);
+        .toLogin {
+          color: rgb(var(--primary-6));
+          cursor: pointer;
+        }
+      }
     }
   }
 }

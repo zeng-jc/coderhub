@@ -6,7 +6,7 @@ import navbarView from '@/components/navbar/navbar-view.vue'
   <div class="app">
     <navbar-view />
     <router-view v-slot="{ Component }">
-      <keep-alive exclude="detail-view">
+      <keep-alive exclude="detail-view,signup-view">
         <component :is="Component"></component>
       </keep-alive>
     </router-view>

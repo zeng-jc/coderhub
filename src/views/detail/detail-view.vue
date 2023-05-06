@@ -11,14 +11,26 @@ const detailStore = useDtailStore()
 detailStore.getMomentDetail(route.params.id)
 detailStore.getComment(route.params.id)
 
-const { momentDetailData, commentsTree } = storeToRefs(detailStore)
+const { momentDetail, commentsTree } = storeToRefs(detailStore)
 </script>
 
 <template>
   <div class="detail">
     <div class="detail-main">
-      <detail-content v-if="momentDetailData" :moment-detail="momentDetailData"></detail-content>
+      <detail-content v-if="momentDetail" :moment-detail="momentDetail"></detail-content>
       <div class="comment-content">
+        <a-comment
+          align="right"
+          avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
+        >
+          <template #actions>
+            <a-button key="0" type="secondary"> Cancel </a-button>
+            <a-button key="1" type="primary"> Reply </a-button>
+          </template>
+          <template #content>
+            <a-input placeholder="Here is you content." />
+          </template>
+        </a-comment>
         <detail-comment v-if="commentsTree" :comments="commentsTree"></detail-comment>
       </div>
     </div>

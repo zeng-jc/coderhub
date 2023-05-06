@@ -16,7 +16,7 @@ defineProps({
     :author="item.user.nickname"
     avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/8361eeb82904210b4f55fab888fe8416.png~tplv-uwbnlip3yd-webp.webp"
     :content="item.content"
-    :datetime="item.creatAt"
+    :datetime="item.createAt"
   >
     <template #actions>
       <span class="action"> <IconMessage /> Reply </span>

@@ -14,10 +14,10 @@ const like = ref(false)
   <div class="moment-content">
     <a-comment
       align="right"
-      :author="momentDetail.moment.user.nickname"
+      :author="momentDetail.user.nickname"
       avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-      :content="momentDetail.moment.content"
-      :datetime="momentDetail.moment.createAt"
+      :content="momentDetail.content"
+      :datetime="momentDetail.createAt"
     >
       <template #actions>
         <span class="action" key="heart">
@@ -27,11 +27,9 @@ const like = ref(false)
           <span v-else>
             <IconHeart />
           </span>
-          {{ momentDetail.moment.likes }}
+          {{ momentDetail.likes }}
         </span>
-        <span class="action" key="reply">
-          <IconMessage /> {{ momentDetail.moment.commentCount }}
-        </span>
+        <span class="action" key="reply"> <IconMessage /> {{ momentDetail.commentCount }} </span>
       </template>
     </a-comment>
   </div>

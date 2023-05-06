@@ -64,7 +64,6 @@ const postMomentBtn = async () => {
 
 <style lang="less" scoped>
 .detail {
-  height: fit-content;
   max-width: 1200px;
   margin: auto;
   display: flex;

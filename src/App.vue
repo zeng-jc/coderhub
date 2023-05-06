@@ -13,9 +13,4 @@ import navbarView from '@/components/navbar/navbar-view.vue'
   </div>
 </template>
 
-<style scoped>
-.app {
-  background-color: var(--theme-bgk2);
-  height: 100%;
-}
-</style>
+<style scoped></style>

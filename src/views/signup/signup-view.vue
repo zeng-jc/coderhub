@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // arco-design
 import { Message } from '@arco-design/web-vue'
-import '@arco-design/web-vue/es/message/style/css.js'
+
 // 子组件
 import verifyNickname from './cmp/verify-nickname.vue'
 import verifyEmail from './cmp/verify-email.vue'

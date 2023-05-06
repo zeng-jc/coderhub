@@ -3,7 +3,6 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import useUserStore from '@/stores/user.store.js'
 import { Message } from '@arco-design/web-vue'
-import '@arco-design/web-vue/es/message/style/css.js'
 
 // hooks
 import { usernameRule, passwordRule } from '@/hooks/formRules'
@@ -22,7 +21,10 @@ const handleSubmit = async (data) => {
   loginLoading.value = true
   try {
     const msg = await userStore.login(data.username, data.password)
-    if (msg) return Message.error(`登录失败，${msg}`)
+    if (msg) {
+      loginLoading.value = false
+      return Message.error(`登录失败，${msg}`)
+    }
     router.push('/home')
     loginLoading.value = false
     userStore.verifyLogin = true

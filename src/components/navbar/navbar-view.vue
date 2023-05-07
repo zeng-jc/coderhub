@@ -35,7 +35,7 @@ const toHome = () => {
 
 <template>
   <div class="navbar">
-    <a-row class="grid-demo" style="margin-bottom: 16px" align="center">
+    <a-row class="grid-demo" align="center">
       <a-col :flex="2" class="left">
         <div
           :style="{
@@ -104,6 +104,14 @@ const toHome = () => {
 }
 .navbar {
   background-color: var(--color-bg-2);
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  // z-index: 9;
+  .grid-demo {
+    margin-bottom: 16px;
+  }
   .left,
   .right {
     display: flex;

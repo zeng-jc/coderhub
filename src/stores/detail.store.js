@@ -25,7 +25,6 @@ const useDtailStore = defineStore('momentDtail', {
     async postComent(moment_id, content, comment_id = null) {
       const res = await fetchPostComent(moment_id, content, comment_id)
       if (res.code !== 200) return res.msg
-      return res.data
     }
   }
 })

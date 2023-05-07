@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive, provide } from 'vue'
 import { useRoute } from 'vue-router'
 import useDtailStore from '../../stores/detail.store'
 import { storeToRefs } from 'pinia'
@@ -10,7 +10,12 @@ import useUserStore from '@/stores/user.store.js'
 import { Notification } from '@arco-design/web-vue'
 const userStore = useUserStore()
 const commentContent = ref('')
-
+// 记录所有回复区域的显示和隐藏状态
+const isShowReply = reactive({})
+// 记录上一个回复区域的状态
+const preReplyState = ref('')
+provide('isShowReply', isShowReply)
+provide('preReplyState', preReplyState)
 const route = useRoute()
 const detailStore = useDtailStore()
 detailStore.getMomentDetail(route.params.id)

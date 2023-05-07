@@ -1,8 +1,9 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, inject } from 'vue'
 import useUserStore from '@/stores/user.store.js'
 import useDtailStore from '@/stores/detail.store'
 import { useRoute } from 'vue-router'
+import { Notification } from '@arco-design/web-vue'
 const route = useRoute()
 
 const userStore = useUserStore()
@@ -16,17 +17,27 @@ defineProps({
 })
 
 const replyContent = reactive({})
-const isShow = reactive({})
+
+const isShowReply = inject('isShowReply')
+const preReplyState = inject('preReplyState')
 // 切换回复区域显示或隐藏
 const toggleReply = (id) => {
-  isShow[id] = !isShow[id]
+  if (preReplyState.value !== id) {
+    isShowReply[preReplyState.value] && (isShowReply[preReplyState.value] = false)
+  }
+  isShowReply[id] = !isShowReply[id]
+  preReplyState.value = id
 }
 // 回复按钮
 const replyBtn = async (id) => {
-  await detailStore.postComent(route.params.id, replyContent[id], id)
+  const msg = await detailStore.postComent(route.params.id, replyContent[id], id)
+  if (msg) return Notification.error('回复失败')
   await detailStore.getComment(route.params.id)
   // 回复评论，且获取到评论后，隐藏回复区域
-  isShow[id] = false
+  isShowReply[id] = false
+  // 清空评论输入框
+  replyContent[id] = ''
+  Notification.success('回复成功')
 }
 </script>
 
@@ -42,7 +53,7 @@ const replyBtn = async (id) => {
   >
     <a-comment>
       <template #content>
-        <div v-show="isShow[item.id]" class="replySection">
+        <div v-show="isShowReply[item.id]" class="replySection">
           <a-textarea
             v-model="replyContent[item.id]"
             placeholder="欢迎评论"
@@ -54,7 +65,7 @@ const replyBtn = async (id) => {
             key="1"
             type="primary"
             @click="replyBtn(item.id)"
-            :disabled="!userStore.verifyLogin || !replyContent"
+            :disabled="!userStore.verifyLogin || !replyContent[item.id]"
           >
             回复评论
           </a-button>
@@ -65,7 +76,7 @@ const replyBtn = async (id) => {
         <span
           class="reply-btn"
           @click="toggleReply(item.id)"
-          :class="{ 'active-color': isShow[item.id] }"
+          :class="{ 'active-color': isShowReply[item.id] }"
         >
           <IconMessage /> 回复
         </span>

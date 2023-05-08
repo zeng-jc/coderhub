@@ -24,6 +24,6 @@
 <style scoped>
 .card {
   width: 240px;
-  background-color: var(--theme-bgk1);
+  background-color: var(--theme-bg1);
 }
 </style>

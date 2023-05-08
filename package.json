@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^1.3.6",
+    "particlesjs": "^2.2.3",
     "pinia": "^2.0.32",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"

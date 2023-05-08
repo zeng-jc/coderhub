@@ -15,7 +15,7 @@
 
 <style scoped>
 .sidebar {
-  background-color: var(--theme-bgk1);
+  background-color: var(--theme-bg1);
   height: fit-content;
 }
 </style>

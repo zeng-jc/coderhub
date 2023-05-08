@@ -71,7 +71,7 @@ const postMomentBtn = async () => {
 
 <style lang="less" scoped>
 .detail {
-  background-color: var(--theme-bgk2);
+  background-color: var(--theme-bg2);
   .detail-container {
     max-width: 1200px;
     padding: 20px 0;

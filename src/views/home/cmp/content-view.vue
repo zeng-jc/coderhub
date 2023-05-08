@@ -67,7 +67,7 @@ const momentDetail = (id) => {
 <style lang="less" scoped>
 .content {
   width: 60%;
-  background-color: var(--theme-bgk1);
+  background-color: var(--theme-bg1);
   margin: 0 15px;
   padding: 20px;
   .content-item {

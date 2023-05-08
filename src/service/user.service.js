@@ -10,3 +10,14 @@ export function fetchLogin(username, password) {
     }
   })
 }
+
+export function fetchUser(username, password) {
+  return myRequest.request({
+    url: '/user',
+    method: 'post',
+    data: {
+      username,
+      password
+    }
+  })
+}

@@ -23,7 +23,7 @@ const { moments } = storeToRefs(homeStore)
 
 <style lang="less" scoped>
 .home {
-  background-color: var(--theme-bgk2);
+  background-color: var(--theme-bg2);
   .home-container {
     max-width: 1200px;
     padding: 20px 0;

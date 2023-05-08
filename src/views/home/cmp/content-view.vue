@@ -20,8 +20,7 @@ const momentDetail = (id) => {
     name: 'detail',
     params: {
       id
-    },
-    target: '_blank'
+    }
   })
 }
 </script>

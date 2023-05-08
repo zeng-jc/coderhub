@@ -11,8 +11,14 @@ if (localStorage.getItem('token')) {
   verifyLogin.value = true
 }
 // 进入个人中心界面
-const centralClick = () => {
-  console.log('个人中心')
+const userClick = () => {
+  // 从token中解析出用户信息，获取用户id
+  const userInfo = localStorage.getItem('token').match(/(?<=\.)[^.]+(?=\.)/)[0]
+  const uid = JSON.parse(decodeURIComponent(atob(userInfo))).id
+  router.push({
+    name: 'user',
+    params: { id: uid }
+  })
 }
 // 注销登录
 const logoutClick = () => {
@@ -76,7 +82,7 @@ const toHome = () => {
           >
           </a-avatar>
           <template #content>
-            <p @click="centralClick" class="central">个人中心</p>
+            <p @click="userClick" class="central">个人中心</p>
             <p @click="logoutClick" class="logout">退出登录</p>
           </template>
         </a-popover>

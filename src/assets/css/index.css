@@ -6,7 +6,6 @@
 html,
 body,
 #app {
-  background-color: var(--theme-bgk2);
   min-height: 100%;
 }
 

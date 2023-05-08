@@ -13,7 +13,7 @@ const { moments } = storeToRefs(homeStore)
 
 <template>
   <div class="home">
-    <div class="main-container">
+    <div class="home-container">
       <sidebar-view />
       <content-view :moments="moments" />
       <userinfo-view />
@@ -24,9 +24,10 @@ const { moments } = storeToRefs(homeStore)
 <style lang="less" scoped>
 .home {
   background-color: var(--theme-bgk2);
-  .main-container {
+  .home-container {
     max-width: 1200px;
-    margin: auto;
+    padding: 20px 0;
+    margin: 0 auto;
     display: flex;
   }
 }

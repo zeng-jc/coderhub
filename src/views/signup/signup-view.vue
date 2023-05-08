@@ -115,15 +115,12 @@ const toLogin = () => {
 </template>
 
 <style scoped lang="less">
-//  background: var(--color-bg-2);
-// rgb(var(--danger-6));
 .signupView {
   background: var(--color-bg-2);
-  height: calc(100vh - 74px);
+  margin-top: 18vh;
   .frame-body {
     width: 50vw;
     margin: 0 auto;
-    padding-top: 15vh;
     .frame-main {
       text-align: center;
       color: #c2c7cc;

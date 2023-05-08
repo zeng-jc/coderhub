@@ -93,9 +93,8 @@ const toSignup = () => {
   background-color: var(--theme-bgk1);
   display: flex;
   justify-content: center;
-  height: calc(100vh - 74px);
+  margin-top: 18vh;
   .loginSection {
-    margin-top: 18vh;
     background-color: #fff;
     width: 700px;
     display: flex;

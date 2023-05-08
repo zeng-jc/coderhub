@@ -33,50 +33,56 @@ const postMomentBtn = async () => {
 
 <template>
   <div class="detail">
-    <div class="detail-main">
-      <detail-content v-if="momentDetail" :moment-detail="momentDetail"></detail-content>
-      <div class="comment-content">
-        <a-comment
-          align="right"
-          avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-        >
-          <template #actions>
-            <a-button
-              key="1"
-              type="primary"
-              @click="postMomentBtn"
-              :disabled="!userStore.verifyLogin || !commentContent"
-            >
-              发表评论
-            </a-button>
-          </template>
-          <template #content>
-            <a-textarea
-              v-model="commentContent"
-              placeholder="欢迎评论"
-              :max-length="255"
-              allow-clear
-              show-word-limit
-            />
-          </template>
-        </a-comment>
-        <detail-comment v-if="commentsTree" :comments="commentsTree"></detail-comment>
+    <div class="detail-container">
+      <div class="detail-main">
+        <detail-content v-if="momentDetail" :moment-detail="momentDetail"></detail-content>
+        <div class="comment-content">
+          <a-comment
+            align="right"
+            avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
+          >
+            <template #actions>
+              <a-button
+                key="1"
+                type="primary"
+                @click="postMomentBtn"
+                :disabled="!userStore.verifyLogin || !commentContent"
+              >
+                发表评论
+              </a-button>
+            </template>
+            <template #content>
+              <a-textarea
+                v-model="commentContent"
+                placeholder="欢迎评论"
+                :max-length="255"
+                allow-clear
+                show-word-limit
+              />
+            </template>
+          </a-comment>
+          <detail-comment v-if="commentsTree" :comments="commentsTree"></detail-comment>
+        </div>
       </div>
+      <detail-sidebar></detail-sidebar>
     </div>
-    <detail-sidebar></detail-sidebar>
   </div>
 </template>
 
 <style lang="less" scoped>
 .detail {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  .detail-main {
-    width: 75%;
-    .comment-content {
-      background-color: var(--color-bg-2);
-      padding: 30px;
+  background-color: var(--theme-bgk2);
+  .detail-container {
+    max-width: 1200px;
+    padding: 20px 0;
+    margin: 0 auto;
+    display: flex;
+    .detail-main {
+      width: 75%;
+      .comment-content {
+        background-color: var(--color-bg-2);
+        padding: 30px;
+      }
     }
   }
 }

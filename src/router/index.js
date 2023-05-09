@@ -28,15 +28,15 @@ const router = createRouter({
       component: () => import('../views/detail/detail-view.vue')
     },
     {
-      path: '/user/:id',
+      path: '/user/:username',
       name: 'user',
       component: () => import('../views/user/user-view.vue')
     }
   ]
 })
 
-router.beforeEach((to) => {
-  if (to.name === 'user' && !localStorage.getItem('token')) return router.replace('/login')
-})
+// router.beforeEach((to) => {
+//   if (to.name === 'user' && !localStorage.getItem('token')) return router.replace('/login')
+// })
 
 export default router

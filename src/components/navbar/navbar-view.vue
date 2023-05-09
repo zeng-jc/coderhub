@@ -13,11 +13,11 @@ if (localStorage.getItem('token')) {
 // 进入个人中心界面
 const userClick = () => {
   // 从token中解析出用户信息，获取用户id
-  const userInfo = localStorage.getItem('token').match(/(?<=\.)[^.]+(?=\.)/)[0]
-  const uid = JSON.parse(decodeURIComponent(atob(userInfo))).id
+  // const userInfo = localStorage.getItem('token').match(/(?<=\.)[^.]+(?=\.)/)[0]
+  // const username = JSON.parse(decodeURIComponent(atob(userInfo))).name
   router.push({
     name: 'user',
-    params: { id: uid }
+    params: { username: localStorage.getItem('username') }
   })
 }
 // 注销登录

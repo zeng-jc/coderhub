@@ -1,11 +1,19 @@
 <script setup>
+import { onMounted, onActivated, onDeactivated } from 'vue'
 // 导入particlesjs
 import Particles from 'particlesjs'
-import { onMounted, onActivated, onDeactivated, ref } from 'vue'
+// 子组件
+import userCard from './cmp/user-card.vue'
+import userContent from './cmp/user-content.vue'
 import useUserStore from '@/stores/user.store'
-const userStore = useUserStore()
-console.log(userStore.user)
+// 当前路由
+import { useRoute } from 'vue-router'
+const route = useRoute()
+// pinia
+import { storeToRefs } from 'pinia'
 
+const userStore = useUserStore()
+const { user, moments } = storeToRefs(userStore)
 onMounted(() => {
   Particles.init({
     selector: '#bg',
@@ -17,47 +25,20 @@ onMounted(() => {
 })
 
 onActivated(() => {
+  userStore.getUser(route.params.username)
+  userStore.getMoments(10, 0, route.params.username)
   Particles.resumeAnimation()
 })
 onDeactivated(() => {
   Particles.pauseAnimation()
 })
-
-const data = ref([
-  {
-    label: 'Name',
-    value: 'Socrates'
-  },
-  {
-    label: 'Mobile',
-    value: '123-1234-1234'
-  },
-  {
-    label: 'Residence',
-    value: 'Beijing'
-  },
-  {
-    label: 'Hometown',
-    value: 'Beijing'
-  },
-  {
-    label: 'Address',
-    value: 'Yingdu Building, Zhichun Road, Beijing'
-  }
-])
 </script>
 
 <template>
   <div class="user-view">
     <div class="user-container">
-      <div class="user-card">
-        <a-avatar class="avatar" :style="{ backgroundColor: '#14a9f8' }" :size="100">Arco</a-avatar>
-        <a-descriptions :data="data" title="User Info" :column="{ xs: 1, md: 3, lg: 4 }">
-          <a-descriptions-item v-for="(item, index) of data" :label="item.label" :key="index">
-            <a-tag>{{ item.value }}</a-tag>
-          </a-descriptions-item>
-        </a-descriptions>
-      </div>
+      <user-card v-if="user" :user="user"></user-card>
+      <user-content v-if="moments" :moments="moments"></user-content>
     </div>
     <canvas id="bg"></canvas>
   </div>
@@ -65,8 +46,8 @@ const data = ref([
 
 <style lang="less" scoped>
 #bg {
-  position: fixed;
-  top: 58px;
+  position: absolute;
+  top: 0;
   left: 0;
   right: 0;
   z-index: -2;
@@ -77,15 +58,6 @@ const data = ref([
   margin: 0 auto;
   .user-container {
     margin: 20px 0;
-    .user-card {
-      display: flex;
-      height: 200px;
-      background-color: var(--color-bg-1);
-      padding: 20px;
-      .avatar {
-        margin-right: 40px;
-      }
-    }
   }
 }
 </style>

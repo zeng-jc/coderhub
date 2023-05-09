@@ -8,7 +8,7 @@ const useUserStore = defineStore('user', {
     return {
       user: '',
       verifyLogin: false,
-      comments: []
+      moments: []
     }
   },
   actions: {
@@ -22,12 +22,12 @@ const useUserStore = defineStore('user', {
     },
     async getUser(username) {
       const res = await fetchUser(username)
+      console.log(res)
       this.user = res.data.user
     },
     async getMoments(limit, offset, username) {
       const res = await fetchMoments(limit, offset, username)
-      console.log(res)
-      this.comments = res.data
+      this.moments = res.data.moments
     }
   }
 })

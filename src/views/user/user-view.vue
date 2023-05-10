@@ -11,11 +11,19 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 // pinia
 import { storeToRefs } from 'pinia'
+// arco-design
+import { Message } from '@arco-design/web-vue'
 
 const userStore = useUserStore()
 const { user, moments } = storeToRefs(userStore)
 userStore.getUser(route.params.username)
 userStore.getMoments(10, 0, route.params.username)
+const createMomentHandler = async (payload) => {
+  const res = await userStore.createMoment(payload)
+  if (!res) return Message.error('动态发布失败')
+  Message.success('动态发布成功')
+  userStore.getMoments(10, 0, route.params.username)
+}
 // Particles.resumeAnimation()
 // onMounted(() => {
 //   Particles.init({
@@ -33,7 +41,11 @@ userStore.getMoments(10, 0, route.params.username)
   <div class="user-view">
     <div class="user-container">
       <user-card v-if="user" :user="user"></user-card>
-      <user-content v-if="moments" :moments="moments"></user-content>
+      <user-content
+        v-if="moments"
+        :moments="moments"
+        @createMoment="createMomentHandler"
+      ></user-content>
     </div>
     <!-- <canvas id="bg"></canvas> -->
   </div>

@@ -29,3 +29,13 @@ export function fetchMoments(limit, offset, username) {
     }
   })
 }
+
+export function fetchCreateMoment(content) {
+  return myRequest.request({
+    url: `/moment`,
+    method: 'post',
+    data: {
+      content
+    }
+  })
+}

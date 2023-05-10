@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { fetchLogin } from '@/service/index'
 import { fetchUser } from '@/service/user.service'
 import { fetchMoments } from '@/service/user.service'
+import { fetchCreateMoment } from '@/service/user.service'
 
 const useUserStore = defineStore('user', {
   state: () => {
@@ -26,6 +27,11 @@ const useUserStore = defineStore('user', {
     async getMoments(limit, offset, username) {
       const res = await fetchMoments(limit, offset, username)
       this.moments = res.data.moments
+    },
+    async createMoment(content) {
+      const res = await fetchCreateMoment(content)
+      if (res.code !== 200) return false
+      return true
     }
   }
 })

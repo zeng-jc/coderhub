@@ -1,5 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { ref, defineEmits } from 'vue'
+const emits = defineEmits(['createMoment'])
 const router = useRouter()
 defineProps({
   moments: {
@@ -7,9 +9,25 @@ defineProps({
     default: () => []
   }
 })
-
+const username = localStorage.getItem('username')
+const token = localStorage.getItem('token')
 const momentDetail = (id) => {
   router.push(`/detail/${id}`)
+}
+
+const momentContent = ref('')
+const visible = ref(false)
+
+const handleClick = () => {
+  visible.value = true
+}
+const handleOk = () => {
+  emits('createMoment', momentContent.value)
+  visible.value = false
+  momentContent.value = ''
+}
+const handleCancel = () => {
+  visible.value = false
 }
 </script>
 
@@ -17,6 +35,23 @@ const momentDetail = (id) => {
   <div class="user-content">
     <a-tabs position="left">
       <a-tab-pane key="1" title="动态">
+        <div class="add-moment-section" v-if="$route.params.username === username && token">
+          <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel" okText="发布">
+            <template #title> 动态内容 </template>
+            <a-textarea
+              v-model="momentContent"
+              placeholder="欢迎评论"
+              :max-length="255"
+              allow-clear
+              show-word-limit
+              :auto-size="{
+                minRows: 4,
+                maxRows: 8
+              }"
+            />
+          </a-modal>
+          <a-button type="primary" @click="handleClick">发布动态+</a-button>
+        </div>
         <a-comment
           v-for="item in moments"
           :author="item.userInfo.nickname"
@@ -54,5 +89,8 @@ const momentDetail = (id) => {
   .moment-content {
     cursor: pointer;
   }
+}
+.add-moment-section {
+  text-align: right;
 }
 </style>

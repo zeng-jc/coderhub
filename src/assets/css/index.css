@@ -8,6 +8,10 @@ body,
 #app {
   min-height: 100%;
 }
+a {
+  text-decoration: none;
+  color: var(--color-text-1);
+}
 
 .arco-input-wrapper {
   background-color: #fff !important;

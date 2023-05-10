@@ -61,6 +61,7 @@ const postMomentBtn = async () => {
               />
             </template>
           </a-comment>
+          <!-- 递归组件 -->
           <detail-comment v-if="commentsTree" :comments="commentsTree"></detail-comment>
         </div>
       </div>

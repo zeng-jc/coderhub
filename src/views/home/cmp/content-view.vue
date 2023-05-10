@@ -1,8 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { IconHeart, IconMessage, IconHeartFill } from '@arco-design/web-vue/es/icon'
-import { useRouter } from 'vue-router'
-const router = useRouter()
 
 const like = ref(false)
 const onLikeChange = () => {
@@ -14,18 +12,6 @@ defineProps({
     default: () => ({})
   }
 })
-
-const momentDetail = (id) => {
-  router.push({
-    name: 'detail',
-    params: {
-      id
-    }
-  })
-}
-const toUserHandler = (username) => {
-  router.push(`/user/${username}`)
-}
 </script>
 
 <template>
@@ -51,16 +37,20 @@ const toUserHandler = (username) => {
         <span class="action" key="reply"> <IconMessage /> {{ item.commentCount }} </span>
       </template>
       <template #avatar>
-        <a-avatar @click="toUserHandler(item.userInfo.username)">
-          <img
-            alt="avatar"
-            src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-          />
-        </a-avatar>
+        <router-link :to="`/user/${item.userInfo.username}`" target="_blank">
+          <a-avatar>
+            <img
+              alt="avatar"
+              src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
+            />
+          </a-avatar>
+        </router-link>
       </template>
       <template #content>
-        <div @click="momentDetail(item.id)" class="moment-content">
-          {{ item.content }}
+        <div class="moment-content">
+          <router-link :to="`/detail/${item.id}`" target="_blank">
+            {{ item.content }}
+          </router-link>
         </div>
       </template>
     </a-comment>
@@ -92,7 +82,7 @@ const toUserHandler = (username) => {
   background: var(--color-fill-3);
 }
 
-.moment-content:hover {
+.moment-content:hover a {
   color: rgb(var(--primary-6));
 }
 </style>

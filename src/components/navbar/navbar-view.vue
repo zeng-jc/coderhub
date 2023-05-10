@@ -10,20 +10,22 @@ const router = useRouter()
 if (localStorage.getItem('token')) {
   verifyLogin.value = true
 }
-// 进入个人中心界面
-const userClick = () => {
-  // 从token中解析出用户信息，获取用户id
-  // const userInfo = localStorage.getItem('token').match(/(?<=\.)[^.]+(?=\.)/)[0]
-  // const username = JSON.parse(decodeURIComponent(atob(userInfo))).name
-  router.push({
-    name: 'user',
-    params: { username: localStorage.getItem('username') }
-  })
-}
+// 进入个人中心界面(现在使用router-link跳转)
+// const userClick = () => {
+//   // 从token中解析出用户信息，获取用户id
+//   // const userInfo = localStorage.getItem('token').match(/(?<=\.)[^.]+(?=\.)/)[0]
+//   // const username = JSON.parse(decodeURIComponent(atob(userInfo))).name
+//   router.push({
+//     name: 'user',
+//     params: { username: localStorage.getItem('username') }
+//   })
+// }
+const username = localStorage.getItem('username')
 // 注销登录
 const logoutClick = () => {
   localStorage.removeItem('token')
   verifyLogin.value = false
+  router.replace('home')
 }
 // 进入登录界面
 const loginClick = () => {
@@ -82,7 +84,9 @@ const toHome = () => {
           >
           </a-avatar>
           <template #content>
-            <p @click="userClick" class="central">个人中心</p>
+            <router-link :to="`/user/${username}`" target="_blank">
+              <p class="central">个人中心</p>
+            </router-link>
             <p @click="logoutClick" class="logout">退出登录</p>
           </template>
         </a-popover>
@@ -98,11 +102,12 @@ const toHome = () => {
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
 .central,
 .logout,
 .login,
 .signup {
+  color: var(--color-text-1);
   cursor: pointer;
   &:hover {
     text-decoration: underline;

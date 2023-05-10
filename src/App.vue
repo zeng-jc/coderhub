@@ -5,7 +5,7 @@ import navbarView from '@/components/navbar/navbar-view.vue'
 <template>
   <navbar-view />
   <router-view v-slot="{ Component }">
-    <keep-alive include="home-view,user-view">
+    <keep-alive include="home-view">
       <component :is="Component"></component>
     </keep-alive>
   </router-view>

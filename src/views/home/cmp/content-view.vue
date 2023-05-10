@@ -23,6 +23,9 @@ const momentDetail = (id) => {
     }
   })
 }
+const toUserHandler = (username) => {
+  router.push(`/user/${username}`)
+}
 </script>
 
 <template>
@@ -48,7 +51,7 @@ const momentDetail = (id) => {
         <span class="action" key="reply"> <IconMessage /> {{ item.commentCount }} </span>
       </template>
       <template #avatar>
-        <a-avatar>
+        <a-avatar @click="toUserHandler(item.userInfo.username)">
           <img
             alt="avatar"
             src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"

@@ -1,7 +1,7 @@
 <script setup>
-import { onMounted, onActivated, onDeactivated } from 'vue'
+// import { onMounted } from 'vue'
 // 导入particlesjs
-import Particles from 'particlesjs'
+// import Particles from 'particlesjs'
 // 子组件
 import userCard from './cmp/user-card.vue'
 import userContent from './cmp/user-content.vue'
@@ -14,24 +14,19 @@ import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
 const { user, moments } = storeToRefs(userStore)
-onMounted(() => {
-  Particles.init({
-    selector: '#bg',
-    color: ['#165dff', '#165dff'],
-    sizeVariations: 3,
-    connectParticles: true,
-    minDistance: 100
-  })
-})
-
-onActivated(() => {
-  userStore.getUser(route.params.username)
-  userStore.getMoments(10, 0, route.params.username)
-  Particles.resumeAnimation()
-})
-onDeactivated(() => {
-  Particles.pauseAnimation()
-})
+userStore.getUser(route.params.username)
+userStore.getMoments(10, 0, route.params.username)
+// Particles.resumeAnimation()
+// onMounted(() => {
+//   Particles.init({
+//     selector: '#bg',
+//     color: ['#165dff', '#165dff'],
+//     sizeVariations: 3,
+//     connectParticles: true,
+//     minDistance: 100
+//   })
+//   // Particles.pauseAnimation()
+// })
 </script>
 
 <template>
@@ -40,7 +35,7 @@ onDeactivated(() => {
       <user-card v-if="user" :user="user"></user-card>
       <user-content v-if="moments" :moments="moments"></user-content>
     </div>
-    <canvas id="bg"></canvas>
+    <!-- <canvas id="bg"></canvas> -->
   </div>
 </template>
 
@@ -54,10 +49,12 @@ onDeactivated(() => {
   background-color: var(--theme-bg2);
 }
 .user-view {
-  max-width: 1200px;
-  margin: 0 auto;
+  background-color: var(--theme-bg2);
+  min-height: calc(100vh - 58px);
+  padding: 20px 0;
   .user-container {
-    margin: 20px 0;
+    margin: 0 auto;
+    max-width: 1200px;
   }
 }
 </style>

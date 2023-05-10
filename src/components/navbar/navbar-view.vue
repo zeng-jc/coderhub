@@ -74,7 +74,7 @@ const toHome = () => {
       </a-col>
       <a-col :flex="2" class="right">
         <icon-notification class="notify" />
-        <a-popover trigger="click" v-if="verifyLogin">
+        <a-popover v-if="verifyLogin">
           <a-avatar
             class="avatar"
             :size="36"
@@ -86,7 +86,7 @@ const toHome = () => {
             <p @click="logoutClick" class="logout">退出登录</p>
           </template>
         </a-popover>
-        <a-popover trigger="click" v-else>
+        <a-popover v-else>
           <a-avatar class="avatar" :size="36">未登录</a-avatar>
           <template #content>
             <p @click="loginClick" class="login">立即登录</p>

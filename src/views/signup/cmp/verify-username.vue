@@ -53,7 +53,7 @@ defineExpose({
 <style scoped>
 .tip {
   font-size: 10px;
-  text-align: left;
+  text-align: center;
   margin-top: 3px;
 }
 </style>

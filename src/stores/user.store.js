@@ -16,13 +16,11 @@ const useUserStore = defineStore('user', {
       const res = await fetchLogin(username, password)
       if (res.code !== 200) return res.msg
       this.user = res.data
-      console.log(res.data)
       localStorage.setItem('token', res.token || null)
       localStorage.setItem('username', res.data.username || null)
     },
     async getUser(username) {
       const res = await fetchUser(username)
-      console.log(res)
       this.user = res.data.user
     },
     async getMoments(limit, offset, username) {

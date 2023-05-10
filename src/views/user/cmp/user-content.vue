@@ -1,10 +1,16 @@
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
 defineProps({
   moments: {
     type: Array,
     default: () => []
   }
 })
+
+const momentDetail = (id) => {
+  router.push(`/detail/${id}`)
+}
 </script>
 
 <template>
@@ -40,10 +46,13 @@ defineProps({
   </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .user-content {
   background-color: var(--color-bg-1);
   margin: 20px 0;
   padding: 20px;
+  .moment-content {
+    cursor: pointer;
+  }
 }
 </style>

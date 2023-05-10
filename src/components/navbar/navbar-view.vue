@@ -20,10 +20,13 @@ if (localStorage.getItem('token')) {
 //     params: { username: localStorage.getItem('username') }
 //   })
 // }
-const username = localStorage.getItem('username')
+const username = () => {
+  return localStorage.getItem('username')
+}
 // 注销登录
 const logoutClick = () => {
   localStorage.removeItem('token')
+  localStorage.removeItem('username')
   verifyLogin.value = false
   router.replace('home')
 }
@@ -77,14 +80,11 @@ const toHome = () => {
       <a-col :flex="2" class="right">
         <icon-notification class="notify" />
         <a-popover v-if="verifyLogin">
-          <a-avatar
-            class="avatar"
-            :size="36"
-            imageUrl="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-          >
+          <a-avatar :style="{ backgroundColor: '#14a9f8' }" :size="36" class="avatar">
+            Arco
           </a-avatar>
           <template #content>
-            <router-link :to="`/user/${username}`" target="_blank">
+            <router-link :to="`/user/${username()}`" target="_blank">
               <p class="central">个人中心</p>
             </router-link>
             <p @click="logoutClick" class="logout">退出登录</p>

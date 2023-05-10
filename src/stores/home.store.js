@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
-import { fetchMomentList } from '../service/home.service'
+import { fetchMomentList, fetchUserList } from '@/service/home.service'
 import dateFormat from '@/utils/format_date'
 
 const useHomeStore = defineStore('home', {
   state: () => ({
-    moments: {}
+    moments: {},
+    users: []
   }),
   actions: {
     async getMomentList(limit, offset) {
@@ -14,6 +15,10 @@ const useHomeStore = defineStore('home', {
         item.createAt = dateFormat(item.createAt, 'YYYY-MM-DD HH:mm')
       }
       this.moments = data
+    },
+    async getUserList(limit, offset) {
+      const res = await fetchUserList(limit, offset)
+      this.users = res.data.users
     }
   }
 })

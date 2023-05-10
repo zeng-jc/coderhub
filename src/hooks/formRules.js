@@ -4,7 +4,7 @@ const formRules = {
     { minLength: 6, message: '用户名不少于6个字符' },
     {
       validator(val, cb) {
-        if (!/^[A-Za-z0-9_@]+$/.test(val)) cb('账户格式错误')
+        if (!/^[A-Za-z0-9_@.]+$/.test(val)) cb('账户格式错误')
       }
     }
   ],

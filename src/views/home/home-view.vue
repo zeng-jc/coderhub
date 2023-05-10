@@ -3,11 +3,12 @@ import '@arco-design/web-vue/es/message/style/css.js'
 // import { Message } from '@arco-design/web-vue'
 import sidebarView from './cmp/sidebar-view.vue'
 import contentView from './cmp/content-view.vue'
-import userinfoView from './cmp/userinfo-view.vue'
+import userlistView from './cmp/userlist-view.vue'
 import useHomeStore from '@/stores/home.store'
 import { storeToRefs } from 'pinia'
 const homeStore = useHomeStore()
 homeStore.getMomentList(15, 0)
+homeStore.getUserList(5, 0)
 const { moments } = storeToRefs(homeStore)
 </script>
 
@@ -16,7 +17,7 @@ const { moments } = storeToRefs(homeStore)
     <div class="home-container">
       <sidebar-view />
       <content-view :moments="moments" />
-      <userinfo-view />
+      <userlist-view :users="homeStore.users" />
     </div>
   </div>
 </template>

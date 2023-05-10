@@ -39,10 +39,7 @@ defineProps({
       <template #avatar>
         <router-link :to="`/user/${item.userInfo.username}`" target="_blank">
           <a-avatar>
-            <img
-              alt="avatar"
-              src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-            />
+            <img alt="avatar" :src="item.userInfo.avatar" />
           </a-avatar>
         </router-link>
       </template>

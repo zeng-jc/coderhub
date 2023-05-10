@@ -15,9 +15,9 @@ import { storeToRefs } from 'pinia'
 import { Message } from '@arco-design/web-vue'
 
 const userStore = useUserStore()
-const { user, moments } = storeToRefs(userStore)
 userStore.getUser(route.params.username)
 userStore.getMoments(10, 0, route.params.username)
+const { user, moments } = storeToRefs(userStore)
 const createMomentHandler = async (payload) => {
   const res = await userStore.createMoment(payload)
   if (!res) return Message.error('动态发布失败')

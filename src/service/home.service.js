@@ -7,3 +7,11 @@ export function fetchMomentList(limit, offset) {
     params: { limit, offset }
   })
 }
+
+export function fetchUserList(limit, offset) {
+  return myRequest.request({
+    method: 'get',
+    url: '/user',
+    params: { limit, offset }
+  })
+}

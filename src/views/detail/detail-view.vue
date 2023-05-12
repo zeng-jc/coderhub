@@ -11,10 +11,10 @@ import { Notification } from '@arco-design/web-vue'
 const userStore = useUserStore()
 const commentContent = ref('')
 // 记录所有回复区域的显示和隐藏状态
-const isShowReply = reactive({})
+const isShowReplies = reactive({})
 // 记录上一个回复区域的状态
 const preReplyState = ref('')
-provide('isShowReply', isShowReply)
+provide('isShowReplies', isShowReplies)
 provide('preReplyState', preReplyState)
 const route = useRoute()
 const detailStore = useDtailStore()

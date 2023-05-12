@@ -14,14 +14,14 @@ export function fetchComent(id) {
   })
 }
 
-export function fetchPostComent(moment_id, content, comment_id = null) {
+export function fetchPostComent(momentId, content, commentId = null) {
   return myRequest.request({
     method: 'post',
     url: `/comment`,
     data: {
-      moment_id,
+      momentId,
       content,
-      comment_id
+      commentId
     }
   })
 }

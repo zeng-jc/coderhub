@@ -22,8 +22,8 @@ const useDtailStore = defineStore('momentDtail', {
       }
       this.commentsTree = listToTree(data.comments)
     },
-    async postComent(moment_id, content, comment_id = null) {
-      const res = await fetchPostComent(moment_id, content, comment_id)
+    async postComent(momentId, content, commentId = null) {
+      const res = await fetchPostComent(momentId, content, commentId)
       if (res.code !== 200) return res.msg
     }
   }

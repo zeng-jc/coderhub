@@ -18,14 +18,14 @@ defineProps({
 
 const replyContent = reactive({})
 
-const isShowReply = inject('isShowReply')
+const isShowReplies = inject('isShowReplies')
 const preReplyState = inject('preReplyState')
 // 切换回复区域显示或隐藏
 const toggleReply = (id) => {
   if (preReplyState.value !== id) {
-    isShowReply[preReplyState.value] && (isShowReply[preReplyState.value] = false)
+    isShowReplies[preReplyState.value] && (isShowReplies[preReplyState.value] = false)
   }
-  isShowReply[id] = !isShowReply[id]
+  isShowReplies[id] = !isShowReplies[id]
   preReplyState.value = id
 }
 // 回复按钮
@@ -34,7 +34,7 @@ const replyBtn = async (id) => {
   if (msg) return Notification.error('回复失败')
   await detailStore.getComment(route.params.id)
   // 回复评论，且获取到评论后，隐藏回复区域
-  isShowReply[id] = false
+  isShowReplies[id] = false
   // 清空评论输入框
   replyContent[id] = ''
   Notification.success('回复成功')
@@ -53,7 +53,7 @@ const replyBtn = async (id) => {
   >
     <a-comment>
       <template #content>
-        <div v-show="isShowReply[item.id]" class="replySection">
+        <div v-show="isShowReplies[item.id]" class="replySection">
           <a-textarea
             v-model="replyContent[item.id]"
             placeholder="欢迎评论"
@@ -76,7 +76,7 @@ const replyBtn = async (id) => {
         <span
           class="reply-btn"
           @click="toggleReply(item.id)"
-          :class="{ 'active-color': isShowReply[item.id] }"
+          :class="{ 'active-color': isShowReplies[item.id] }"
         >
           <IconMessage /> 回复
         </span>

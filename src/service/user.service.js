@@ -1,11 +1,11 @@
 import myRequest from './request/request'
 
-export function fetchLogin(username, password) {
+export function fetchLogin(email, password) {
   return myRequest.request({
     url: '/login',
     method: 'post',
     data: {
-      username,
+      email,
       password
     }
   })

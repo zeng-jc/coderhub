@@ -5,14 +5,14 @@ import useUserStore from '@/stores/user.store.js'
 import { Message } from '@arco-design/web-vue'
 
 // hooks
-import { usernameRule, passwordRule } from '@/hooks/formRules'
+import { emailRule, passwordRule } from '@/hooks/formRules'
 
 const userStore = useUserStore()
 const router = useRouter()
 const loginLoading = ref(false)
 
 const form = reactive({
-  username: '',
+  email: '',
   password: '',
   isRemember: false
 })
@@ -20,7 +20,8 @@ const form = reactive({
 const handleSubmit = async (data) => {
   loginLoading.value = true
   try {
-    const msg = await userStore.login(data.username, data.password)
+    console.log(data)
+    const msg = await userStore.login(data.email, data.password)
     if (msg) {
       loginLoading.value = false
       return Message.error(`登录失败，${msg}`)
@@ -47,8 +48,8 @@ const toSignup = () => {
         <h2>欢迎回来~</h2>
         <div class="tip">请输入你的信息</div>
         <a-form :model="form" layout="vertical" class="loginform" @submit-success="handleSubmit">
-          <a-form-item field="username" label="Username" :rules="usernameRule">
-            <a-input v-model="form.username" placeholder="请输入用户名/邮箱">
+          <a-form-item field="email" label="Email" :rules="emailRule">
+            <a-input v-model="form.email" placeholder="请输入邮箱">
               <template #prefix>
                 <icon-user />
               </template>

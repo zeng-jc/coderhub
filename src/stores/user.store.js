@@ -13,8 +13,8 @@ const useUserStore = defineStore('user', {
     }
   },
   actions: {
-    async login(username, password) {
-      const res = await fetchLogin(username, password)
+    async login(email, password) {
+      const res = await fetchLogin(email, password)
       if (res.code !== 200) return res.msg
       this.user = res.data
       localStorage.setItem('token', res.token || null)

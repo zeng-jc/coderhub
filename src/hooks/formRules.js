@@ -1,12 +1,7 @@
 const formRules = {
-  username: [
-    { required: true, message: '请填写用户名' },
-    { minLength: 6, message: '用户名不少于6个字符' },
-    {
-      validator(val, cb) {
-        if (!/^[A-Za-z0-9_@.]+$/.test(val)) cb('账户格式错误')
-      }
-    }
+  email: [
+    { required: true, message: '请填写邮箱' },
+    { type: 'email', message: '请填写正确的邮箱' }
   ],
   password: [
     { required: true, message: '请填写密码' },
@@ -24,4 +19,4 @@ const formRules = {
 }
 
 // 解构导出，并对属性重命名
-export const { username: usernameRule, password: passwordRule, nickname: nicknameRule } = formRules
+export const { email: emailRule, password: passwordRule, nickname: nicknameRule } = formRules

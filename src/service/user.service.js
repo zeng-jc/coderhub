@@ -39,3 +39,24 @@ export function fetchCreateMoment(content) {
     }
   })
 }
+
+export function fetchEmialVerifyCode(email) {
+  return myRequest.request({
+    url: `/sendEmail`,
+    method: 'post',
+    data: {
+      email
+    }
+  })
+}
+
+export function fetchEmailVerifyLogin(email, code) {
+  return myRequest.request({
+    url: `/loginVerifyCode`,
+    method: 'post',
+    data: {
+      email,
+      code
+    }
+  })
+}

@@ -5,7 +5,10 @@ import useUserStore from '@/stores/user.store.js'
 import { Message } from '@arco-design/web-vue'
 
 // hooks
-import { emailRule, passwordRule } from '@/hooks/formRules'
+import { emailRule, passwordRule, codeRule } from '@/hooks/formRules'
+
+// 子组件
+import rightSection from './cmp/right-section.vue'
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -14,14 +17,20 @@ const loginLoading = ref(false)
 const form = reactive({
   email: '',
   password: '',
+  code: null,
   isRemember: false
 })
 
 const handleSubmit = async (data) => {
   loginLoading.value = true
   try {
-    console.log(data)
-    const msg = await userStore.login(data.email, data.password)
+    let msg
+    // 如果填写了验证码，使用验证码登录
+    if (data.code) {
+      msg = await userStore.emailVerifyLogin(data.email, data.code)
+    } else {
+      msg = await userStore.login(data.email, data.password)
+    }
     if (msg) {
       loginLoading.value = false
       return Message.error(`登录失败，${msg}`)
@@ -39,6 +48,40 @@ const handleSubmit = async (data) => {
 const toSignup = () => {
   router.push('signup')
 }
+const loginForm = ref()
+
+const curTabActive = ref(0)
+const tabs = reactive(['密码登录', '验证码登录'])
+const tabClick = (index) => {
+  // 重置表单数据
+  loginForm.value.resetFields()
+  curTabActive.value = index
+}
+const isDisabled = ref(false)
+
+const verifyBtnText = ref('获取验证码')
+
+const countdownFn = (time) => {
+  verifyBtnText.value = `${time}秒后重发`
+  setTimeout(() => {
+    if (time > 1) countdownFn(time - 1)
+    else {
+      verifyBtnText.value = '获取验证码'
+      isDisabled.value = false
+    }
+  }, 1000)
+}
+
+// 获取验证码
+const getVerifyCode = async () => {
+  const res = await loginForm.value.validateField('email')
+  if (res) return
+  isDisabled.value = true
+  const isSend = await userStore.getEmialVerifyCode(form.email)
+  if (isSend) Message.success('验证码已发送，请注意查收')
+  else Message.error('验证码发送失败')
+  countdownFn(60)
+}
 </script>
 
 <template>
@@ -46,23 +89,61 @@ const toSignup = () => {
     <div class="loginSection">
       <div class="left">
         <h2>欢迎回来~</h2>
-        <div class="tip">请输入你的信息</div>
-        <a-form :model="form" layout="vertical" class="loginform" @submit-success="handleSubmit">
+        <div class="login-mode">
+          <span
+            v-for="(item, index) in tabs"
+            :key="index"
+            @click="tabClick(index)"
+            :class="{ active: curTabActive === index }"
+          >
+            {{ item }}
+          </span>
+        </div>
+        <a-form
+          :model="form"
+          layout="vertical"
+          class="login-form"
+          @submit-success="handleSubmit"
+          ref="loginForm"
+        >
+          <!-- 邮箱输入框 -->
           <a-form-item field="email" label="Email" :rules="emailRule">
-            <a-input v-model="form.email" placeholder="请输入邮箱">
+            <a-input v-model="form.email" placeholder="请输入邮箱" allow-clear>
               <template #prefix>
                 <icon-user />
               </template>
             </a-input>
           </a-form-item>
-          <a-form-item field="password" label="Password" :rules="passwordRule">
-            <a-input-password v-model="form.password" placeholder="请输入密码">
+          <!-- 密码输入框 -->
+          <a-form-item
+            field="password"
+            label="Password"
+            :rules="passwordRule"
+            v-if="curTabActive === 0"
+          >
+            <a-input-password v-model="form.password" placeholder="请输入密码" allow-clear>
               <template #prefix>
                 <icon-lock />
               </template>
             </a-input-password>
           </a-form-item>
-          <a-form-item field="isRead" class="handler">
+          <!-- 验证码输入框 -->
+          <a-form-item field="code" label="Code" :rules="codeRule" v-else>
+            <a-input-number v-model="form.code" placeholder="请输入验证码" allow-clear hide-button>
+              <template #prefix>
+                <icon-info-circle />
+              </template>
+            </a-input-number>
+            <a-button
+              style="margin-left: 15px"
+              @click="getVerifyCode"
+              type="outline"
+              :disabled="isDisabled"
+            >
+              {{ verifyBtnText }}
+            </a-button>
+          </a-form-item>
+          <a-form-item field="isRemember" class="handler">
             <a-checkbox v-model="form.isRemember"> 记住密码 </a-checkbox>
             <div class="forgetPassword">忘记密码</div>
           </a-form-item>
@@ -75,9 +156,7 @@ const toSignup = () => {
           <span @click="toSignup">立即注册</span>
         </div>
       </div>
-      <div class="right">
-        <div class="circle"></div>
-      </div>
+      <right-section />
     </div>
   </div>
 </template>
@@ -89,6 +168,11 @@ const toSignup = () => {
     color: rgb(var(--primary-6));
     cursor: pointer;
   }
+}
+
+.active {
+  color: rgb(var(--primary-6));
+  border-bottom: 2px solid rgb(var(--primary-6));
 }
 .login-view {
   background-color: var(--theme-bgk1);
@@ -106,10 +190,15 @@ const toSignup = () => {
     .left {
       flex: 1;
       padding: 0 40px;
-      .tip {
+      .login-mode {
         color: #c9cdd4;
         font-size: 10px;
         margin-bottom: 10px;
+        text-align: right;
+        span {
+          margin-left: 10px;
+          cursor: pointer;
+        }
       }
       .toSignup {
         margin: 15px 0;
@@ -117,31 +206,6 @@ const toSignup = () => {
         span {
           cursor: pointer;
           color: rgb(var(--primary-6));
-        }
-      }
-    }
-    .right {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f5f7f9;
-      .circle {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background-color: rgb(var(--primary-6));
-        position: relative;
-        &::after {
-          content: '';
-          width: 180px;
-          height: 85px;
-          background-color: transparent;
-          backdrop-filter: blur(8px);
-          position: absolute;
-          top: 50%;
-          right: 50%;
-          transform: translateX(50%);
         }
       }
     }

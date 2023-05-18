@@ -15,8 +15,14 @@ const formRules = {
         if (!/^[^ ]+$/.test(val)) cb('不能包含空格')
       }
     }
-  ]
+  ],
+  code: [{ required: true, message: '请填写验证码' }]
 }
 
 // 解构导出，并对属性重命名
-export const { email: emailRule, password: passwordRule, nickname: nicknameRule } = formRules
+export const {
+  email: emailRule,
+  password: passwordRule,
+  nickname: nicknameRule,
+  code: codeRule
+} = formRules

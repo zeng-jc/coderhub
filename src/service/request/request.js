@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { BASE_URL, TIMEOUT } from './config'
-
 class MyRequest {
   constructor(baseURL, timeout = 8000) {
     this.instance = axios.create({

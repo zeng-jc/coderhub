@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
-import { fetchLogin } from '@/service/index'
-import { fetchUser } from '@/service/user.service'
-import { fetchMoments } from '@/service/user.service'
-import { fetchCreateMoment } from '@/service/user.service'
+import {
+  fetchLogin,
+  fetchUser,
+  fetchMoments,
+  fetchCreateMoment,
+  fetchEmialVerifyCode,
+  fetchEmailVerifyLogin
+} from '@/service/index'
 
 const useUserStore = defineStore('user', {
   state: () => {
@@ -32,6 +36,18 @@ const useUserStore = defineStore('user', {
       const res = await fetchCreateMoment(content)
       if (res.code !== 200) return false
       return true
+    },
+    async getEmialVerifyCode(email) {
+      const res = await fetchEmialVerifyCode(email)
+      if (res.code !== 200) return false
+      return true
+    },
+    async emailVerifyLogin(email, code) {
+      const res = await fetchEmailVerifyLogin(email, code)
+      if (res.code !== 200) return res.msg
+      this.user = res.data
+      localStorage.setItem('token', res.token || null)
+      localStorage.setItem('username', res.data.username || null)
     }
   }
 })

@@ -1,4 +1,4 @@
-import myRequest from './request/request'
+import myRequest from '../request/request'
 
 export function fetchLogin(email, password) {
   return myRequest.request({

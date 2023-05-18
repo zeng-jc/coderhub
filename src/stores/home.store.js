@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { fetchMomentList, fetchUserList } from '@/service/home.service'
+import { fetchMomentList, fetchUserList } from '@/service'
 import dateFormat from '@/utils/format_date'
 
 const useHomeStore = defineStore('home', {

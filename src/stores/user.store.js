@@ -6,7 +6,7 @@ import {
   fetchCreateMoment,
   fetchEmialVerifyCode,
   fetchEmailVerifyLogin
-} from '@/service/index'
+} from '@/service'
 
 const useUserStore = defineStore('user', {
   state: () => {

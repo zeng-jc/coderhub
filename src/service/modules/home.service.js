@@ -1,4 +1,4 @@
-import myRequest from './request/request'
+import myRequest from '../request/request'
 
 export function fetchMomentList(limit, offset) {
   return myRequest.request({

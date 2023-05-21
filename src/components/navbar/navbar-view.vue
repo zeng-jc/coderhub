@@ -42,6 +42,10 @@ const signupClick = () => {
 const toHome = () => {
   router.push('/home')
 }
+
+const getAvatar = () => {
+  return localStorage.getItem('avatar')
+}
 </script>
 
 <template>
@@ -80,8 +84,8 @@ const toHome = () => {
       <a-col :flex="2" class="right">
         <icon-notification class="notify" />
         <a-popover v-if="verifyLogin">
-          <a-avatar :style="{ backgroundColor: '#14a9f8' }" :size="36" class="avatar">
-            Arco
+          <a-avatar :size="36" class="avatar">
+            <img :src="getAvatar()" alt="" />
           </a-avatar>
           <template #content>
             <router-link :to="`/user/${username()}`" target="_blank">

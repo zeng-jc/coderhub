@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { IconHeart, IconMessage, IconHeartFill } from '@arco-design/web-vue/es/icon'
-
 const like = ref(false)
 const onLikeChange = () => {
   like.value = !like.value

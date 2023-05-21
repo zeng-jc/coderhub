@@ -24,12 +24,18 @@ const data = ref([
     value: props.user.createAt
   }
 ])
+
+const getAvatar = () => {
+  return localStorage.getItem('avatar')
+}
 </script>
 
 <template>
   <div class="user-card">
     <div class="user-card">
-      <a-avatar class="avatar" :style="{ backgroundColor: '#14a9f8' }" :size="100">Arco</a-avatar>
+      <a-avatar class="avatar" :size="100">
+        <img :src="getAvatar()" alt="" />
+      </a-avatar>
       <a-descriptions :data="data" title="User Info" :column="{ xs: 1, md: 3, lg: 4 }">
         <a-descriptions-item v-for="(item, index) of data" :label="item.label" :key="index">
           <a-tag>{{ item.value }}</a-tag>

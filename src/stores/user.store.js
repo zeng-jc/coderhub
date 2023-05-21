@@ -23,6 +23,7 @@ const useUserStore = defineStore('user', {
       this.user = res.data
       localStorage.setItem('token', res.token || null)
       localStorage.setItem('username', res.data.username || null)
+      localStorage.setItem('avatar', res.data.avatar || null)
     },
     async getUser(username) {
       const res = await fetchUser(username)

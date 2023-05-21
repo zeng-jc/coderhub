@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import { IconHeart, IconMessage, IconHeartFill } from '@arco-design/web-vue/es/icon'
-const like = ref(false)
-const onLikeChange = () => {
-  like.value = !like.value
+const likes = ref({})
+const onLikeChange = (id) => {
+  if (!likes.value[id]) return (likes.value[id] = true)
+  likes.value[id] = !likes.value[id]
 }
 defineProps({
   moments: {
@@ -17,15 +18,19 @@ defineProps({
   <div class="content">
     <a-comment
       v-for="item in moments.moments"
-      :author="item.userInfo.nickname"
       :datetime="item.createAt"
       :key="item.id"
       class="content-item"
       align="right"
     >
+      <template #author>
+        <router-link :to="`/user/${item.userInfo.username}`" target="_blank">
+          {{ item.userInfo.nickname }}
+        </router-link>
+      </template>
       <template #actions>
-        <span class="action" key="heart" @click="onLikeChange">
-          <span v-if="like">
+        <span class="action" key="heart" @click="onLikeChange(item.id)">
+          <span v-if="likes[item.id]">
             <IconHeartFill :style="{ color: '#f53f3f' }" />
           </span>
           <span v-else>

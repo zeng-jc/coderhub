@@ -1,4 +1,11 @@
 import axios from 'axios'
+// hooks
+import { authInfoClear } from '@/hooks/authInfo'
+// arco-design
+import { Message } from '@arco-design/web-vue'
+// 路由
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import { BASE_URL, TIMEOUT } from './config'
 class MyRequest {
   constructor(baseURL, timeout = 8000) {
@@ -17,6 +24,11 @@ class MyRequest {
     )
     this.instance.interceptors.response.use(
       (res) => {
+        if (res.data.code === -1006 || res.data.msg === '无效token，请登录') {
+          authInfoClear()
+          Message.error('登录已失效，请重新登录')
+          router.push('/login')
+        }
         return res
       },
       (err) => {

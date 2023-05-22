@@ -4,8 +4,7 @@ import { authInfoClear } from '@/hooks/authInfo'
 // arco-design
 import { Message } from '@arco-design/web-vue'
 // 路由
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import router from '@/router'
 import { BASE_URL, TIMEOUT } from './config'
 class MyRequest {
   constructor(baseURL, timeout = 8000) {

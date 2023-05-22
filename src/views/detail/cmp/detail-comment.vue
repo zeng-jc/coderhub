@@ -48,7 +48,7 @@ const replyBtn = async (id) => {
     :comments="comments"
     :key="item.id"
     :author="item.user.nickname"
-    avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/8361eeb82904210b4f55fab888fe8416.png~tplv-uwbnlip3yd-webp.webp"
+    :avatar="item.user.avatar"
     :datetime="item.createAt"
   >
     <a-comment>

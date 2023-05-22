@@ -29,6 +29,10 @@ const postMomentBtn = async () => {
   commentContent.value = ''
   detailStore.getComment(route.params.id)
 }
+
+const getAvatar = () => {
+  return localStorage.getItem('avatar')
+}
 </script>
 
 <template>
@@ -37,10 +41,7 @@ const postMomentBtn = async () => {
       <div class="detail-main">
         <detail-content v-if="momentDetail" :moment-detail="momentDetail"></detail-content>
         <div class="comment-content">
-          <a-comment
-            align="right"
-            avatar="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-          >
+          <a-comment align="right" :avatar="getAvatar()">
             <template #actions>
               <a-button
                 key="1"

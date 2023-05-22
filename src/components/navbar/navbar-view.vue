@@ -1,5 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
+// hooks
+import { authInfoClear } from '@/hooks/authInfo'
 import useUserStore from '@/stores/user.store.js'
 import { storeToRefs } from 'pinia'
 const userStore = useUserStore()
@@ -25,8 +27,7 @@ const username = () => {
 }
 // 注销登录
 const logoutClick = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('username')
+  authInfoClear()
   verifyLogin.value = false
   router.replace('home')
 }

@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import {
   fetchLogin,
   fetchUser,
@@ -7,7 +6,9 @@ import {
   fetchEmialVerifyCode,
   fetchEmailVerifyLogin
 } from '@/service'
+import { authInfoCache } from '@/hooks/authInfo'
 
+import { defineStore } from 'pinia'
 const useUserStore = defineStore('user', {
   state: () => {
     return {
@@ -21,9 +22,7 @@ const useUserStore = defineStore('user', {
       const res = await fetchLogin(email, password)
       if (res.code !== 200) return res.msg
       this.user = res.data
-      localStorage.setItem('token', res.token || null)
-      localStorage.setItem('username', res.data.username || null)
-      localStorage.setItem('avatar', res.data.avatar || null)
+      authInfoCache(res)
     },
     async getUser(username) {
       const res = await fetchUser(username)
@@ -47,8 +46,7 @@ const useUserStore = defineStore('user', {
       const res = await fetchEmailVerifyLogin(email, code)
       if (res.code !== 200) return res.msg
       this.user = res.data
-      localStorage.setItem('token', res.token || null)
-      localStorage.setItem('username', res.data.username || null)
+      authInfoCache(res)
     }
   }
 })

@@ -1,37 +1,24 @@
 <script setup>
-import { ref, reactive, provide } from 'vue'
 import { useRoute } from 'vue-router'
+import { Notification } from '@arco-design/web-vue'
 import useDtailStore from '../../stores/detail.store'
 import { storeToRefs } from 'pinia'
 import detailContent from './cmp/detail-content.vue'
 import detailSidebar from './cmp/detail-sidebar.vue'
 import detailComment from './cmp/detail-comment.vue'
-import useUserStore from '@/stores/user.store.js'
-import { Notification } from '@arco-design/web-vue'
-const userStore = useUserStore()
-const commentContent = ref('')
-// 记录所有回复区域的显示和隐藏状态
-const isShowReplies = reactive({})
-// 记录上一个回复区域的状态
-const preReplyState = ref('')
-provide('isShowReplies', isShowReplies)
-provide('preReplyState', preReplyState)
+
 const route = useRoute()
 const detailStore = useDtailStore()
 detailStore.getMomentDetail(route.params.id)
 detailStore.getComment(route.params.id)
 const { momentDetail, commentsTree } = storeToRefs(detailStore)
 
-const postMomentBtn = async () => {
-  const msg = await detailStore.postComent(route.params.id, commentContent.value)
+const sendMomentHandler = async (payload) => {
+  const msg = await detailStore.postComent(route.params.id, payload.value)
   if (msg) return Notification.error('评论发表失败')
   Notification.success('评论发表成功')
-  commentContent.value = ''
+  payload.value = ''
   detailStore.getComment(route.params.id)
-}
-
-const getAvatar = () => {
-  return localStorage.getItem('avatar')
 }
 </script>
 
@@ -40,31 +27,11 @@ const getAvatar = () => {
     <div class="detail-container">
       <div class="detail-main">
         <detail-content v-if="momentDetail" :moment-detail="momentDetail"></detail-content>
-        <div class="comment-content">
-          <a-comment align="right" :avatar="getAvatar()">
-            <template #actions>
-              <a-button
-                key="1"
-                type="primary"
-                @click="postMomentBtn"
-                :disabled="!userStore.verifyLogin || !commentContent"
-              >
-                发表评论
-              </a-button>
-            </template>
-            <template #content>
-              <a-textarea
-                v-model="commentContent"
-                placeholder="欢迎评论"
-                :max-length="255"
-                allow-clear
-                show-word-limit
-              />
-            </template>
-          </a-comment>
-          <!-- 递归组件 -->
-          <detail-comment v-if="commentsTree" :comments="commentsTree"></detail-comment>
-        </div>
+        <detail-comment
+          v-if="commentsTree"
+          :commentsTree="commentsTree"
+          @sendMoment="sendMomentHandler"
+        />
       </div>
       <detail-sidebar></detail-sidebar>
     </div>
@@ -82,10 +49,6 @@ const getAvatar = () => {
     display: flex;
     .detail-main {
       width: 75%;
-      .comment-content {
-        background-color: var(--color-bg-2);
-        padding: 30px;
-      }
     }
   }
 }

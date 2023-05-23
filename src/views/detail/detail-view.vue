@@ -14,7 +14,7 @@ detailStore.getComment(route.params.id)
 const { momentDetail, commentsTree } = storeToRefs(detailStore)
 
 const sendMomentHandler = async (payload) => {
-  const msg = await detailStore.postComent(route.params.id, payload.value)
+  const msg = await detailStore.sendComment(route.params.id, payload.value)
   if (msg) return Notification.error('评论发表失败')
   Notification.success('评论发表成功')
   payload.value = ''

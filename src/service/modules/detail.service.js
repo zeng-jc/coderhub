@@ -7,14 +7,14 @@ export function fetchMomentDetail(id) {
   })
 }
 
-export function fetchComent(id) {
+export function fetchComment(id) {
   return myRequest.request({
     method: 'get',
     url: `/comment/${id}`
   })
 }
 
-export function fetchPostComent(momentId, content, commentId = null) {
+export function fetchSendComment(momentId, content, commentId = null) {
   return myRequest.request({
     method: 'post',
     url: `/comment`,

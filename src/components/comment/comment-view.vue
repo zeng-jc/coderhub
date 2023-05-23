@@ -30,7 +30,7 @@ const toggleReply = (id) => {
 }
 // 回复按钮
 const replyBtn = async (id) => {
-  const msg = await detailStore.postComent(route.params.id, replyContent[id], id)
+  const msg = await detailStore.sendComment(route.params.id, replyContent[id], id)
   if (msg) return Notification.error('回复失败')
   await detailStore.getComment(route.params.id)
   // 回复评论，且获取到评论后，隐藏回复区域

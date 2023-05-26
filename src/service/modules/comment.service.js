@@ -19,7 +19,7 @@ export function fetchSendComment(momentId, content, commentId = null) {
   })
 }
 
-export function fetchRemoveComent(commentId) {
+export function fetchRemoveComment(commentId) {
   return myRequest.request({
     method: 'delete',
     url: `/comment/${commentId}`

@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, inject } from 'vue'
+import { reactive, inject, ref } from 'vue'
 import useUserStore from '@/stores/user.store.js'
 import useCommentStore from '@/stores/comment.store'
 import { useRoute } from 'vue-router'
@@ -40,9 +40,32 @@ const replyBtn = async (id) => {
   replyContent[id] = ''
   Notification.success('回复成功')
 }
+// 控制用户是否可以删除
+const isDelete = (username) => {
+  return localStorage.getItem('username') === username
+}
+
+const visible = ref(false)
+const curCommentId = ref('')
+// 删除按钮
+const deleteBtn = (id) => {
+  curCommentId.value = id
+  visible.value = true
+}
+// 确认删除
+const deleteOk = async () => {
+  visible.value = false
+  const msg = await commentStore.removeComment(curCommentId.value)
+  if (msg) return Notification.error('删除失败')
+  await commentStore.getComment(route.params.id)
+  Notification.success('删除成功')
+}
 </script>
 
 <template>
+  <a-modal v-model:visible="visible" @ok="deleteOk" type="warning" :simple="true">
+    <div><icon-info-circle-fill style="color: rgb(var(--warning-6))" /> 你确定要删除此评论吗?</div>
+  </a-modal>
   <a-comment
     class="moments"
     v-for="item in comments"
@@ -74,7 +97,7 @@ const replyBtn = async (id) => {
       </template>
 
       <template #actions>
-        <div>
+        <div class="action-comment">
           <span
             class="reply-btn"
             @click="toggleReply(item.id)"
@@ -82,6 +105,15 @@ const replyBtn = async (id) => {
           >
             <IconMessage /> 回复
           </span>
+          <a-popover>
+            <div style="cursor: pointer">...</div>
+            <template #content>
+              <div class="delete" v-if="isDelete(item.user.username)" @click="deleteBtn(item.id)">
+                删除
+              </div>
+              <div class="report">举报</div>
+            </template>
+          </a-popover>
         </div>
       </template>
     </a-comment>
@@ -102,5 +134,18 @@ const replyBtn = async (id) => {
 }
 .active-color {
   color: rgb(var(--primary-6));
+}
+.action-comment {
+  display: flex;
+  justify-content: space-between;
+  .delete {
+    color: rgb(var(--danger-6));
+    // opacity: 0;
+  }
+}
+.report:hover,
+.delete:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>

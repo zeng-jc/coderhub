@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { fetchComment, fetchSendComment } from '@/service'
+import { fetchComment, fetchSendComment, fetchRemoveComment } from '@/service'
 import listToTree from '@/utils/listToTree'
 import dateFormat from '@/utils/format_date'
 
@@ -18,6 +18,10 @@ const useComomentStore = defineStore('comment', {
     },
     async sendComment(momentId, content, commentId = null) {
       const res = await fetchSendComment(momentId, content, commentId)
+      if (res.code !== 200) return res.msg
+    },
+    async removeComment(commnetId) {
+      const res = await fetchRemoveComment(commnetId)
       if (res.code !== 200) return res.msg
     }
   }

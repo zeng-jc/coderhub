@@ -1,103 +1,84 @@
 <script setup>
-import { reactive, inject } from 'vue'
-import useUserStore from '@/stores/user.store.js'
-import useDtailStore from '@/stores/detail.store'
+import { ref, reactive, provide } from 'vue'
 import { useRoute } from 'vue-router'
+// 子组件
+import commentRecursive from './cmp/comment-recursive.vue'
+// store
+import useUserStore from '@/stores/user.store.js'
+import useCommentStore from '@/stores/comment.store'
+import { storeToRefs } from 'pinia'
+
 import { Notification } from '@arco-design/web-vue'
-const route = useRoute()
 
 const userStore = useUserStore()
-const detailStore = useDtailStore()
+const route = useRoute()
+const commentStore = useCommentStore()
+commentStore.getComment(route.params.id)
+const { commentsTree } = storeToRefs(commentStore)
 
 defineProps({
-  comments: {
+  commentsTree: {
     type: Object,
     default: () => ({})
   }
 })
 
-const replyContent = reactive({})
+// 评论内容
+const commentContent = ref('')
 
-const isShowReplies = inject('isShowReplies')
-const preReplyState = inject('preReplyState')
-// 切换回复区域显示或隐藏
-const toggleReply = (id) => {
-  if (preReplyState.value !== id) {
-    isShowReplies[preReplyState.value] && (isShowReplies[preReplyState.value] = false)
-  }
-  isShowReplies[id] = !isShowReplies[id]
-  preReplyState.value = id
+// 获取用户头像
+const getAvatar = () => {
+  return localStorage.getItem('avatar')
 }
-// 回复按钮
-const replyBtn = async (id) => {
-  const msg = await detailStore.sendComment(route.params.id, replyContent[id], id)
-  if (msg) return Notification.error('回复失败')
-  await detailStore.getComment(route.params.id)
-  // 回复评论，且获取到评论后，隐藏回复区域
-  isShowReplies[id] = false
-  // 清空评论输入框
-  replyContent[id] = ''
-  Notification.success('回复成功')
+
+// 发送评论
+const sendMomentBtn = async () => {
+  const msg = await commentStore.sendComment(route.params.id, commentContent.value)
+  if (msg) return Notification.error('评论发表失败')
+  Notification.success('评论发表成功')
+  commentContent.value = ''
+  commentStore.getComment(route.params.id)
 }
+
+// 记录所有回复区域的显示和隐藏状态
+const isShowReplies = reactive({})
+// 记录上一个回复区域的状态
+const preReplyState = ref('')
+provide('isShowReplies', isShowReplies)
+provide('preReplyState', preReplyState)
 </script>
 
 <template>
-  <a-comment
-    class="moments"
-    v-for="item in comments"
-    :comments="comments"
-    :key="item.id"
-    :author="item.user.nickname"
-    :avatar="item.user.avatar"
-    :datetime="item.createAt"
-  >
-    <a-comment>
-      <template #content>
-        <div v-show="isShowReplies[item.id]" class="replySection">
-          <a-textarea
-            v-model="replyContent[item.id]"
-            placeholder="欢迎评论"
-            :max-length="255"
-            allow-clear
-            show-word-limit
-          />
-          <a-button
-            key="1"
-            type="primary"
-            @click="replyBtn(item.id)"
-            :disabled="!userStore.verifyLogin || !replyContent[item.id]"
-          >
-            回复评论
-          </a-button>
-        </div>
-      </template>
-
+  <div class="detail-comment">
+    <a-comment align="right" :avatar="getAvatar()">
       <template #actions>
-        <span
-          class="reply-btn"
-          @click="toggleReply(item.id)"
-          :class="{ 'active-color': isShowReplies[item.id] }"
+        <a-button
+          key="1"
+          type="primary"
+          @click="sendMomentBtn"
+          :disabled="!userStore.verifyLogin || !commentContent"
         >
-          <IconMessage /> 回复
-        </span>
+          发表评论
+        </a-button>
+      </template>
+      <template #content>
+        <a-textarea
+          v-model="commentContent"
+          placeholder="欢迎评论"
+          :max-length="255"
+          allow-clear
+          show-word-limit
+        />
       </template>
     </a-comment>
     <!-- 递归组件 -->
-    <comment-view v-if="item.replies" :comments="item.replies" />
-    <template #content>
-      <div v-html="item.content"></div>
-    </template>
-  </a-comment>
+    <comment-recursive v-if="commentsTree" :comments="commentsTree" />
+  </div>
 </template>
 
 <style scoped>
-.reply-btn {
-  cursor: pointer;
-}
-.replySection {
-  text-align: right;
-}
-.active-color {
-  color: rgb(var(--primary-6));
+.detail-comment {
+  background-color: var(--color-bg-2);
+  padding: 30px;
 }
 </style>

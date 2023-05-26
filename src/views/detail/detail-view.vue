@@ -1,25 +1,16 @@
 <script setup>
 import { useRoute } from 'vue-router'
-import { Notification } from '@arco-design/web-vue'
 import useDtailStore from '../../stores/detail.store'
 import { storeToRefs } from 'pinia'
 import detailContent from './cmp/detail-content.vue'
 import detailSidebar from './cmp/detail-sidebar.vue'
-import detailComment from './cmp/detail-comment.vue'
+import commentView from '@/components/comment/comment-view.vue'
 
 const route = useRoute()
 const detailStore = useDtailStore()
 detailStore.getMomentDetail(route.params.id)
-detailStore.getComment(route.params.id)
-const { momentDetail, commentsTree } = storeToRefs(detailStore)
 
-const sendMomentHandler = async (payload) => {
-  const msg = await detailStore.sendComment(route.params.id, payload.value)
-  if (msg) return Notification.error('评论发表失败')
-  Notification.success('评论发表成功')
-  payload.value = ''
-  detailStore.getComment(route.params.id)
-}
+const { momentDetail } = storeToRefs(detailStore)
 </script>
 
 <template>
@@ -27,11 +18,7 @@ const sendMomentHandler = async (payload) => {
     <div class="detail-container">
       <div class="detail-main">
         <detail-content v-if="momentDetail" :moment-detail="momentDetail"></detail-content>
-        <detail-comment
-          v-if="commentsTree"
-          :commentsTree="commentsTree"
-          @sendMoment="sendMomentHandler"
-        />
+        <comment-view />
       </div>
       <detail-sidebar></detail-sidebar>
     </div>

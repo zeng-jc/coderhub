@@ -46,11 +46,23 @@ const router = createRouter({
       meta: {
         title: '用户主页'
       }
+    },
+    {
+      path: '/user/edit',
+      name: 'edituser',
+      component: () => import('../views/edituser/edituser-view.vue'),
+      meta: {
+        title: '个人资料编辑'
+      }
     }
   ]
 })
 
 router.beforeEach((to) => {
+  // 如果进入edituser路由，且没有登录，就会重定向到login
+  if (to.name === 'edituser' && !localStorage.getItem('token') && to.name !== 'login') {
+    return { name: 'login' }
+  }
   if (to.meta.title) {
     document.title = to.meta.title
   }

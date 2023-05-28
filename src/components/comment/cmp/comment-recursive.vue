@@ -64,7 +64,9 @@ const deleteOk = async () => {
 
 <template>
   <a-modal v-model:visible="visible" @ok="deleteOk" type="warning" :simple="true">
-    <div><icon-info-circle-fill style="color: rgb(var(--warning-6))" /> 你确定要删除此评论吗?</div>
+    <div>
+      <icon-exclamation-circle-fill style="color: rgb(var(--warning-6))" /> 你确定要删除此评论吗?
+    </div>
   </a-modal>
   <a-comment
     class="moments"

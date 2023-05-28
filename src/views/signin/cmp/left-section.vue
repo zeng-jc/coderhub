@@ -11,7 +11,7 @@ import countdownFn from '@/utils/countdownFn'
 
 const userStore = useUserStore()
 const router = useRouter()
-const loginLoading = ref(false)
+const signinLoading = ref(false)
 
 const form = reactive({
   email: '',
@@ -21,7 +21,7 @@ const form = reactive({
 })
 
 const handleSubmit = async (data) => {
-  loginLoading.value = true
+  signinLoading.value = true
   try {
     let msg
     // 如果填写了验证码，使用验证码登录
@@ -31,16 +31,16 @@ const handleSubmit = async (data) => {
       msg = await userStore.login(data.email, data.password)
     }
     if (msg) {
-      loginLoading.value = false
+      signinLoading.value = false
       return Message.error(`登录失败，${msg}`)
     }
     router.push('/home')
-    loginLoading.value = false
+    signinLoading.value = false
     userStore.verifyLogin = true
     Message.success('登录成功')
   } catch (error) {
     Message.error('服务器异常')
-    loginLoading.value = false
+    signinLoading.value = false
   }
 }
 
@@ -132,7 +132,7 @@ const getVerifyCode = async (event) => {
         <div class="forgetPassword">忘记密码</div>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" long html-type="submit" :loading="loginLoading">登录</a-button>
+        <a-button type="primary" long html-type="submit" :loading="signinLoading">登录</a-button>
       </a-form-item>
     </a-form>
     <div class="toSignup">

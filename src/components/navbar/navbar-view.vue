@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // hooks
 import { authInfoClear } from '@/hooks/authInfo'
@@ -25,8 +26,13 @@ if (localStorage.getItem('token')) {
 const username = () => {
   return localStorage.getItem('username')
 }
+const visible = ref(false)
 // 注销登录
 const signoutClick = () => {
+  visible.value = true
+}
+// 确定退出
+const handleOk = () => {
   authInfoClear()
   verifyLogin.value = false
   router.replace('home')
@@ -51,6 +57,11 @@ const getAvatar = () => {
 
 <template>
   <div class="navbar">
+    <a-modal v-model:visible="visible" @ok="handleOk" :simple="true">
+      <div>
+        <icon-exclamation-circle-fill style="color: rgb(var(--warning-6))" /> 你确定要退出登录吗？
+      </div>
+    </a-modal>
     <a-row align="center">
       <a-col :flex="2" class="left">
         <div

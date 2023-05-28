@@ -5,8 +5,8 @@ import leftSection from './cmp/left-section.vue'
 </script>
 
 <template>
-  <div class="login-view">
-    <div class="loginSection">
+  <div class="signin-view">
+    <div class="signinSection">
       <left-section />
       <right-section />
     </div>
@@ -14,12 +14,12 @@ import leftSection from './cmp/left-section.vue'
 </template>
 
 <style lang="less" scoped>
-.login-view {
+.signin-view {
   background-color: var(--theme-bgk1);
   display: flex;
   justify-content: center;
   margin-top: 18vh;
-  .loginSection {
+  .signinSection {
     background-color: #fff;
     width: 700px;
     display: flex;

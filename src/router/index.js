@@ -16,9 +16,9 @@ const router = createRouter({
       }
     },
     {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/login/login-view.vue'),
+      path: '/signin',
+      name: 'signin',
+      component: () => import('../views/signin/signin-view.vue'),
       meta: {
         title: '登录'
       }
@@ -60,8 +60,8 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   // 如果进入edituser路由，且没有登录，就会重定向到login
-  if (to.name === 'edituser' && !localStorage.getItem('token') && to.name !== 'login') {
-    return { name: 'login' }
+  if (to.name === 'edituser' && !localStorage.getItem('token') && to.name !== 'signin') {
+    return { name: 'signin' }
   }
   if (to.meta.title) {
     document.title = to.meta.title

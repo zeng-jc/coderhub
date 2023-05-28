@@ -24,9 +24,9 @@ class MyRequest {
     this.instance.interceptors.response.use(
       (res) => {
         if (res.data.code === -1006 || res.data.msg === '无效token，请登录') {
-          authInfoClear()
           Message.error('登录已失效，请重新登录')
-          router.push('/login')
+          router.push('/signin')
+          authInfoClear()
         }
         return res
       },

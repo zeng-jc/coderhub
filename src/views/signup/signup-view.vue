@@ -61,8 +61,8 @@ const onNext = async () => {
   }
 }
 
-const toLogin = () => {
-  router.push('/login')
+const toSignin = () => {
+  router.push('/signin')
 }
 </script>
 
@@ -107,7 +107,7 @@ const toLogin = () => {
         </a-space>
         <div class="login-text">
           已有账号？
-          <span class="toLogin" @click="toLogin">立即登录</span>
+          <span class="toSignin" @click="toSignin">立即登录</span>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@ const toLogin = () => {
       .login-text {
         margin-top: 25px;
         color: var(--color-text-1);
-        .toLogin {
+        .toSignin {
           color: rgb(var(--primary-6));
           cursor: pointer;
         }

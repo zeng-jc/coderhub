@@ -12,7 +12,8 @@ const router = createRouter({
       name: 'home',
       component: () => import('../views/home/home-view.vue'),
       meta: {
-        title: '首页'
+        title: '首页',
+        isNavbar: true
       }
     },
     {
@@ -20,7 +21,8 @@ const router = createRouter({
       name: 'signin',
       component: () => import('../views/signin/signin-view.vue'),
       meta: {
-        title: '登录'
+        title: '登录',
+        isNavbar: false
       }
     },
     {
@@ -28,7 +30,8 @@ const router = createRouter({
       name: 'signup',
       component: () => import('../views/signup/signup-view.vue'),
       meta: {
-        title: '注册'
+        title: '注册',
+        isNavbar: false
       }
     },
     {
@@ -36,7 +39,8 @@ const router = createRouter({
       name: 'detail',
       component: () => import('../views/detail/detail-view.vue'),
       meta: {
-        title: '详情'
+        title: '详情',
+        isNavbar: true
       }
     },
     {
@@ -44,7 +48,8 @@ const router = createRouter({
       name: 'user',
       component: () => import('../views/user/user-view.vue'),
       meta: {
-        title: '用户主页'
+        title: '用户主页',
+        isNavbar: true
       }
     },
     {
@@ -52,7 +57,8 @@ const router = createRouter({
       name: 'edituser',
       component: () => import('../views/edituser/edituser-view.vue'),
       meta: {
-        title: '个人资料编辑'
+        title: '个人资料编辑',
+        isNavbar: true
       }
     }
   ]

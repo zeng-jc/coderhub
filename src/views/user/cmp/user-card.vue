@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import dateForm from '@/utils/format_date'
+const router = useRouter()
 const props = defineProps({
   user: {
     type: Object,
@@ -8,7 +10,6 @@ const props = defineProps({
   }
 })
 const gender = computed(() => {
-  console.log(props.user.gender)
   if (props.user.gender === 0) {
     return '女'
   } else if (props.user.gender === 1) {
@@ -32,17 +33,18 @@ const data = ref([
   }
 ])
 
-const getAvatar = () => {
-  return localStorage.getItem('avatar')
-}
 const username = localStorage.getItem('username')
 const token = localStorage.getItem('token')
+
+const toEdit = () => {
+  router.push('/user/edit')
+}
 </script>
 
 <template>
   <div class="user-card">
     <a-avatar class="avatar" :size="100">
-      <img :src="getAvatar()" alt="" />
+      <img :src="user.avatar" alt="" />
     </a-avatar>
     <div class="user-info">
       <a-descriptions :data="data" :title="user.nickname" :column="{ xs: 1, md: 3, lg: 4 }">
@@ -57,7 +59,7 @@ const token = localStorage.getItem('token')
       </a-descriptions>
     </div>
     <div class="edit-user">
-      <a-button type="outline" v-if="$route.params.username === username && token">
+      <a-button type="outline" v-if="$route.params.username === username && token" @click="toEdit">
         编辑资料
       </a-button>
     </div>

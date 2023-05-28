@@ -26,14 +26,14 @@ const username = () => {
   return localStorage.getItem('username')
 }
 // 注销登录
-const logoutClick = () => {
+const signoutClick = () => {
   authInfoClear()
   verifyLogin.value = false
   router.replace('home')
 }
 // 进入登录界面
-const loginClick = () => {
-  router.push('/login')
+const signinClick = () => {
+  router.push('/signin')
 }
 // 进入注册界面
 const signupClick = () => {
@@ -92,13 +92,13 @@ const getAvatar = () => {
             <router-link :to="`/user/${username()}`" target="_blank">
               <p class="central">个人中心</p>
             </router-link>
-            <p @click="logoutClick" class="logout">退出登录</p>
+            <p @click="signoutClick" class="signout">退出登录</p>
           </template>
         </a-popover>
         <a-popover v-else>
           <a-avatar class="avatar" :size="36">未登录</a-avatar>
           <template #content>
-            <p @click="loginClick" class="login">立即登录</p>
+            <p @click="signinClick" class="signin">立即登录</p>
             <p @click="signupClick" class="signup">立即注册</p>
           </template>
         </a-popover>
@@ -109,8 +109,8 @@ const getAvatar = () => {
 
 <style lang="less" scoped>
 .central,
-.logout,
-.login,
+.signout,
+.signin,
 .signup {
   color: var(--color-text-1);
   cursor: pointer;
@@ -121,11 +121,6 @@ const getAvatar = () => {
 .navbar {
   background-color: var(--color-menu-light-bg);
   box-shadow: 0 0 10px -5px #86909c;
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  // right: 0;
-  // z-index: 9;
 
   .left,
   .right {

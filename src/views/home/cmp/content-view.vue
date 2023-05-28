@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, defineEmits } from 'vue'
 import { IconHeart, IconMessage, IconHeartFill } from '@arco-design/web-vue/es/icon'
 const likes = ref({})
 const onLikeChange = (id) => {
@@ -10,14 +10,36 @@ defineProps({
   moments: {
     type: Object,
     default: () => ({})
+  },
+  isShowLoading: {
+    type: Boolean,
+    default: true
   }
+})
+
+const emits = defineEmits(['loadMoment'])
+function loadMomentFn(count) {
+  emits('loadMoment', count)
+}
+
+const loadingRef = ref()
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        loadMomentFn({ count: 15, observer })
+      }
+    },
+    { threshold: 1 }
+  )
+  observer.observe(loadingRef.value)
 })
 </script>
 
 <template>
   <div class="content">
     <a-comment
-      v-for="item in moments.moments"
+      v-for="item in moments"
       :datetime="item.createAt"
       :key="item.id"
       class="content-item"
@@ -55,6 +77,13 @@ defineProps({
         </div>
       </template>
     </a-comment>
+    <div class="loading" ref="loadingRef" v-if="isShowLoading">
+      <a-spin dot />
+    </div>
+    <h3 v-else style="color: var(--color-text-3); text-align: center">
+      <icon-info-circle />
+      已经加载到底部了
+    </h3>
   </div>
 </template>
 
@@ -85,5 +114,9 @@ defineProps({
 
 .moment-content:hover a {
   color: rgb(var(--primary-6));
+}
+
+.loading {
+  text-align: center;
 }
 </style>

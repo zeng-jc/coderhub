@@ -2,7 +2,9 @@
 
 <template>
   <div class="edit-user">
-    <div class="edit-user-container"></div>
+    <div class="edit-user-container">
+      <div class="edit-user-content"></div>
+    </div>
   </div>
 </template>
 
@@ -14,7 +16,10 @@
     max-width: 1200px;
     padding: 20px 0;
     margin: 0 auto;
-    display: flex;
+    .edit-user-content {
+      background-color: #fff;
+      min-height: calc(100vh - 98px);
+    }
   }
 }
 </style>

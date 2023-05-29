@@ -18,8 +18,8 @@ defineProps({
 })
 
 const emits = defineEmits(['loadMoment'])
-function loadMomentFn(count) {
-  emits('loadMoment', count)
+function loadMomentFn(obj) {
+  emits('loadMoment', obj)
 }
 
 const loadingRef = ref()

@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref, defineEmits } from 'vue'
-const emits = defineEmits(['createMoment'])
+const emits = defineEmits(['createMoment', 'removeMoment'])
 const router = useRouter()
 defineProps({
   moments: {
@@ -29,6 +29,18 @@ const handleOk = () => {
 const handleCancel = () => {
   visible.value = false
 }
+
+const deleteVisible = ref(false)
+const curId = ref('')
+const removeMoment = (id) => {
+  console.log(id)
+  deleteVisible.value = true
+  curId.value = id
+}
+const deleteHandleOk = () => {
+  emits('removeMoment', curId.value)
+  deleteVisible.value = false
+}
 </script>
 
 <template>
@@ -36,6 +48,7 @@ const handleCancel = () => {
     <a-tabs position="left">
       <a-tab-pane key="1" title="动态">
         <div class="add-moment-section" v-if="$route.params.username === username && token">
+          <!-- 发布动态对话框 -->
           <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel" okText="发布">
             <template #title> 动态内容 </template>
             <a-textarea
@@ -66,6 +79,13 @@ const handleCancel = () => {
               {{ item.likes }}
             </span>
             <span class="action" key="reply"> <IconMessage /> {{ item.commentCount }} </span>
+            <span
+              class="delete"
+              @click="removeMoment(item.id)"
+              v-if="$route.params.username === username && token"
+            >
+              <icon-delete /> 删除
+            </span>
           </template>
           <template #content>
             <div @click="momentDetail(item.id)" class="moment-content">
@@ -73,6 +93,13 @@ const handleCancel = () => {
             </div>
           </template>
         </a-comment>
+        <!-- 删除对话框 -->
+        <a-modal v-model:visible="deleteVisible" @ok="deleteHandleOk" :simple="true">
+          <div>
+            <icon-exclamation-circle-fill style="color: rgb(var(--warning-6))" />
+            你确定要删除此动态吗？删除后不可恢复！
+          </div>
+        </a-modal>
       </a-tab-pane>
       <a-tab-pane key="2" title="文章"> Content of Tab Panel 2 </a-tab-pane>
       <a-tab-pane key="3" title="收藏"> Content of Tab Panel 3 </a-tab-pane>
@@ -92,5 +119,11 @@ const handleCancel = () => {
 }
 .add-moment-section {
   text-align: right;
+}
+.delete {
+  cursor: pointer;
+  &:hover {
+    color: rgb(var(--warning-6));
+  }
 }
 </style>

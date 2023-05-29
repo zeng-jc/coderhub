@@ -24,6 +24,13 @@ const createMomentHandler = async (payload) => {
   Message.success('动态发布成功')
   userStore.getMoments(10, 0, route.params.username)
 }
+
+const removeMomentHandler = async (id) => {
+  const res = await userStore.removeMoment(id)
+  if (!res) return Message.error('动态删除失败')
+  Message.success('动态删除成功')
+  userStore.getMoments(10, 0, route.params.username)
+}
 // Particles.resumeAnimation()
 // onMounted(() => {
 //   Particles.init({
@@ -45,6 +52,7 @@ const createMomentHandler = async (payload) => {
         v-if="moments"
         :moments="moments"
         @createMoment="createMomentHandler"
+        @removeMoment="removeMomentHandler"
       ></user-content>
     </div>
     <!-- <canvas id="bg"></canvas> -->

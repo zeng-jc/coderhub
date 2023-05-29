@@ -40,6 +40,13 @@ export function fetchCreateMoment(content) {
   })
 }
 
+export function fetchRemoveMoment(id) {
+  return myRequest.request({
+    url: `/moment/${id}`,
+    method: 'delete'
+  })
+}
+
 export function fetchEmialVerifyCode(email) {
   return myRequest.request({
     url: `/sendEmail`,

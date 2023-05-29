@@ -4,7 +4,8 @@ import {
   fetchMoments,
   fetchCreateMoment,
   fetchEmialVerifyCode,
-  fetchEmailVerifyLogin
+  fetchEmailVerifyLogin,
+  fetchRemoveMoment
 } from '@/service'
 import { authInfoCache } from '@/hooks/authInfo'
 
@@ -34,6 +35,11 @@ const useUserStore = defineStore('user', {
     },
     async createMoment(content) {
       const res = await fetchCreateMoment(content)
+      if (res.code !== 200) return false
+      return true
+    },
+    async removeMoment(id) {
+      const res = await fetchRemoveMoment(id)
       if (res.code !== 200) return false
       return true
     },

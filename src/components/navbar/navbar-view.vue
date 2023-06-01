@@ -8,21 +8,11 @@ import { storeToRefs } from 'pinia'
 const userStore = useUserStore()
 const { verifyLogin } = storeToRefs(userStore)
 const router = useRouter()
-
 // 检查是否登录
 if (localStorage.getItem('token')) {
   verifyLogin.value = true
 }
-// 进入个人中心界面(现在使用router-link跳转)
-// const userClick = () => {
-//   // 从token中解析出用户信息，获取用户id
-//   // const userInfo = localStorage.getItem('token').match(/(?<=\.)[^.]+(?=\.)/)[0]
-//   // const username = JSON.parse(decodeURIComponent(atob(userInfo))).name
-//   router.push({
-//     name: 'user',
-//     params: { username: localStorage.getItem('username') }
-//   })
-// }
+
 const username = () => {
   return localStorage.getItem('username')
 }

@@ -5,7 +5,8 @@ import {
   fetchCreateMoment,
   fetchEmialVerifyCode,
   fetchEmailVerifyLogin,
-  fetchRemoveMoment
+  fetchRemoveMoment,
+  fetchUpdateUser
 } from '@/service'
 import { authInfoCache } from '@/hooks/authInfo'
 
@@ -53,6 +54,10 @@ const useUserStore = defineStore('user', {
       if (res.code !== 200) return res.msg
       this.user = res.data
       authInfoCache(res)
+    },
+    async updateUser() {
+      const res = await fetchUpdateUser(this.user)
+      return res.msg
     }
   }
 })

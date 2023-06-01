@@ -67,3 +67,13 @@ export function fetchEmailVerifyLogin(email, code) {
     }
   })
 }
+
+export function fetchUpdateUser(user) {
+  return myRequest.request({
+    url: `/user`,
+    method: 'put',
+    data: {
+      ...user
+    }
+  })
+}

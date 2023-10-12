@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div class="userlist">
-    <a-card hoverable :style="{ width: '18vw' }">
+    <a-card hoverable :style="{ width: '200px' }">
       <template #cover>
         <img
           :style="{ width: '100%' }"

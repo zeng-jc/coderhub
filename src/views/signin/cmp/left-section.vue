@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import useUserStore from '@/stores/user.store.js'
 import { Message } from '@arco-design/web-vue'
@@ -14,10 +14,9 @@ const router = useRouter()
 const signinLoading = ref(false)
 
 const form = reactive({
-  email: '',
-  password: '',
-  code: null,
-  isRemember: false
+  email: localStorage.getItem('email'),
+  password: localStorage.getItem('password'),
+  code: null
 })
 
 const handleSubmit = async (data) => {
@@ -29,6 +28,13 @@ const handleSubmit = async (data) => {
       msg = await userStore.emailVerifyLogin(data.email, data.code)
     } else {
       msg = await userStore.login(data.email, data.password)
+      if (keepPwd.value) {
+        localStorage.setItem('email', data.email)
+        localStorage.setItem('password', data.password)
+      } else {
+        localStorage.removeItem('email', data.email)
+        localStorage.removeItem('password', data.password)
+      }
     }
     if (msg) {
       signinLoading.value = false
@@ -67,6 +73,12 @@ const getVerifyCode = async (event) => {
   if (isSend) Message.success('验证码已发送，请注意查收')
   else Message.error('验证码发送失败')
 }
+
+const keepPwd = ref(JSON.parse(localStorage.getItem('keepPwd')))
+watch(keepPwd, (newVal) => {
+  console.log(newVal)
+  localStorage.setItem('keepPwd', newVal)
+})
 </script>
 
 <template>
@@ -110,6 +122,10 @@ const getVerifyCode = async (event) => {
           </template>
         </a-input-password>
       </a-form-item>
+      <a-form-item field="isRemember" class="handler" v-if="curTabActive === 0">
+        <a-checkbox v-model="keepPwd"> 记住密码 </a-checkbox>
+        <div class="forgetPassword">忘记密码</div>
+      </a-form-item>
       <!-- 验证码输入框 -->
       <a-form-item field="code" label="Code" :rules="codeRule" v-else>
         <a-input-number v-model="form.code" placeholder="请输入验证码" allow-clear hide-button>
@@ -126,10 +142,6 @@ const getVerifyCode = async (event) => {
         >
           获取验证码
         </a-button>
-      </a-form-item>
-      <a-form-item field="isRemember" class="handler">
-        <a-checkbox v-model="form.isRemember"> 记住密码 </a-checkbox>
-        <div class="forgetPassword">忘记密码</div>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" long html-type="submit" :loading="signinLoading">登录</a-button>

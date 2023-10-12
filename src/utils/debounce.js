@@ -4,7 +4,7 @@
 // 3.获取返回值
 
 /**
- * zjc节流函数
+ * zjc防抖函数
  * @param {*} listenFn 监听函数
  * @param {Number} delay 延迟时间
  * @param {Boolean} immediate 是否立即执行依次
